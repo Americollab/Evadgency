@@ -1,25 +1,43 @@
-var rightPress = false;
-var leftPress = false;
 var upPress = false;
 var downPress = false;
-var up = true;
-var down = true;
-var right = true;
-var left = true;
+var leftPress = false;
+var rightPress = false;
 
 document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
 
-function keyDownHandler(e){
-    if(e.keyCode == 39){rightPress = true; console.log("Right.");}
-    if(e.keyCode == 37){leftPress = true; console.log("Left.");}
-    if(e.keyCode == 38){upPress = true; console.log("Up.");}
-    if(e.keyCode == 40){downPress = true; console.log("Down.");}
+function keyDownHandler(e) {
+
+    if (e.keyCode == 39) {
+        rightPress = true;
+        console.log("Right.");
+    }
+    if (e.keyCode == 37) {
+        leftPress = true;
+        console.log("Left.");
+    }
+    if (e.keyCode == 38) {
+        upPress = true;
+        console.log("Up.");
+    }
+    if (e.keyCode == 40) {
+        downPress = true;
+        console.log("Down.");
+    }
 }
 
-function keyUpHandler(e){
-    if(e.keyCode == 39){rightPress = false;}
-    if(e.keyCode == 37){leftPress = false;}
-    if(e.keyCode == 38){upPress = false;}
-    if(e.keyCode == 40){downPress = false;}
+function controlPlayer() {
+
+        if (upPress == true) {
+            player.y = player.y - player.spd;
+            upPress = false;
+        } else if (downPress) {
+            player.y = player.y + player.spd;
+            downPress = false;
+        } else if (leftPress) {
+            player.x = player.x - player.spd;
+            leftPress = false;
+        } else if (rightPress) {
+            player.x = player.x + player.spd;
+            rightPress = false;
+        }
 }

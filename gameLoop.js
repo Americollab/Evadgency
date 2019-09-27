@@ -1,41 +1,35 @@
 var ctx = document.getElementById("gameWindow").getContext("2d");
 ctx.font = '30px Arial';
+
 console.log("Game loaded!");
 
-setInterval(update, 40);
-
+var img = new Image();
+img.src = 'sprites/frog.png';
 var player = {
-    sprite: "p",
-    x: 50,
-    y: 40,
+    sprite: img,
+    x: 500,
+    y: 400,
     spd: 10,
     width: 20,
-    height: 20,
-    
+    height: 20
+
 };
 
 // Game Logic Updates
 function updateEntity(entity) {
-    entity.x += entity.spd;
-    entity.y += entity.spd;
-    ctx.fillStyle = "white";
-    ctx.fillRect(entity.x, entity.y,entity.width,entity.height);
-    
+
+    ctx.drawImage(entity.sprite, entity.x, entity.y, entity.width, entity.height);
+    controlPlayer();
 }
 
 function update() {
-    
+    ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
     updateEntity(player);
-}
-function draw() {
-    $.getScript("gameDraw.js", function () {
-        drawBackground();
-    });
-
-    requestAnimationFrame(draw);
+    
+    requestAnimationFrame(update);
 }
 
-draw();
+update();
 
 
 
