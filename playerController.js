@@ -27,16 +27,16 @@ function keyDownHandler(e) {
 
 function controlPlayer() {
 
-        if (upPress == true) {
+        if (upPress == true && player.y > 10) {
             player.y = player.y - player.spd;
             upPress = false;
-        } else if (downPress) {
+        } else if (downPress && player.y < 510) {
             player.y = player.y + player.spd;
             downPress = false;
-        } else if (leftPress) {
+        } else if (leftPress && player.x > 10) {
             player.x = player.x - player.spd;
             leftPress = false;
-        } else if (rightPress) {
+        } else if (rightPress && player.x < 540) {
             player.x = player.x + player.spd;
             rightPress = false;
         }
