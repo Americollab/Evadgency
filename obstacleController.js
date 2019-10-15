@@ -1,4 +1,4 @@
-function obstacleMove(){
+function obstacleMove(obstacle){
     if(obstacle.x < gameWindow.width + 100){
         obstacle.x = obstacle.x + obstacle.spd;
     
