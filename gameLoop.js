@@ -6,7 +6,9 @@ console.log("Game loaded!");
 var gameMaster = {
     difficulty: 1,
     score: 0,
-    time: 100
+    time: 100,
+    lives: 3,
+    gameOn: true
 }
 
 var img = new Image();
@@ -22,8 +24,8 @@ var player = {
 
 var obstacles = {};
 
-obstacle(200, 200, 0, 20, 20, "obstacle1");
-obstacle(300, 100, 0, 20, 20, "obstacle2");
+obstacle(200, 200, 1, 20, 20, "obstacle1");
+obstacle(300, 100, 1, 20, 20, "obstacle2");
 
 function obstacle(x, y, spd, width, height, id) {
     var obstacleImg = new Image();
@@ -57,15 +59,26 @@ function update() {
     for (var key in obstacles) {
         updateEntity(obstacles[key]); 
     }
-    requestAnimationFrame(update);
+    
+    if (gameMaster.lives === 0){
+        cancelAnimationFrame(update);
+        console.log(gameMaster.gameOn);
+        console.log("Game Over Scrub");
+    } else{
+       requestAnimationFrame(update); 
+    }
+    
 }
 
 function obstacleCollide(obstacle) {
     if (player.x <= obstacle.x + obstacle.width / 2 && player.x >= obstacle.x - obstacle.width / 2 && player.y <= obstacle.y + obstacle.height / 2 && player.y >= obstacle.y - obstacle.height / 2) {
         console.log("Collided with obstacle");
-        // lose life
-        // reset player pos to start
-        //if no lives remain then end game
+        gameMaster.lives -=1;
+        player.x = 200;
+        player.y = 500;
+        console.log(gameMaster.lives);
+
+        
     }
 }
 
