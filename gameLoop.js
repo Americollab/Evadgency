@@ -2,46 +2,37 @@ var ctx = document.getElementById("gameWindow").getContext("2d");
 ctx.font = '30px Arial';
 
 console.log("Game loaded!");
-
+    
 var gameMaster = {
     difficulty: 1,
     score: 0,
-    time: 100,
+    time: 600,
     lives: 3,
     gameOn: true
 }
 
-var img = new Image();
-img.src = 'sprites/frog.png';
-var player = {
-    sprite: img,
-    x: 200,
-    y: 500,
-    spd: 10,
-    width: 20,
-    height: 20
-};
+var timer = setInterval(function(){   
+    gameMaster.time = gameMaster.time - timer;
+    console.log(gameMaster.time);  
+},1000);
 
-var obstacles = {};
-
-obstacle(200, 200, 1, 20, 20, "obstacle1");
-obstacle(300, 100, 1, 20, 20, "obstacle2");
-
-function obstacle(x, y, spd, width, height, id) {
-    var obstacleImg = new Image();
-    obstacleImg.src = "sprites/obstacle.png";
-    var obstacle = {
-        sprite: obstacleImg,
-        x: x,
-        y: y,
-        spd: spd,
-        width: width,
-        height: height,
-        id: id
-    }
-    obstacles[id] = obstacle;
-}
 // Game Logic Updates
+function update() {
+    ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
+    updateEntity(player);
+    for (var key in obstacles) {
+        updateEntity(obstacles[key]); 
+    }
+    
+    if (gameMaster.lives == 0 || gameMaster.time == 0){
+        cancelAnimationFrame(update);
+        clearInterval(timer);
+        console.log("Game Over");
+    } else{
+       requestAnimationFrame(update); 
+    }
+}
+
 function updateEntity(entity) {
 
     ctx.drawImage(entity.sprite, entity.x, entity.y, entity.width, entity.height);
@@ -53,34 +44,7 @@ function updateEntity(entity) {
     
 }
 
-function update() {
-    ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
-    updateEntity(player);
-    for (var key in obstacles) {
-        updateEntity(obstacles[key]); 
-    }
-    
-    if (gameMaster.lives === 0){
-        cancelAnimationFrame(update);
-        console.log(gameMaster.gameOn);
-        console.log("Game Over Scrub");
-    } else{
-       requestAnimationFrame(update); 
-    }
-    
-}
 
-function obstacleCollide(obstacle) {
-    if (player.x <= obstacle.x + obstacle.width / 2 && player.x >= obstacle.x - obstacle.width / 2 && player.y <= obstacle.y + obstacle.height / 2 && player.y >= obstacle.y - obstacle.height / 2) {
-        console.log("Collided with obstacle");
-        gameMaster.lives -=1;
-        player.x = 200;
-        player.y = 500;
-        console.log(gameMaster.lives);
-
-        
-    }
-}
 
 update();
 

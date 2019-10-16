@@ -3,6 +3,17 @@ var downPress = false;
 var leftPress = false;
 var rightPress = false;
 
+var img = new Image();
+img.src = 'sprites/frog.png';
+var player = {
+    sprite: img,
+    x: 200,
+    y: 500,
+    spd: 10,
+    width: 20,
+    height: 20
+};
+
 document.addEventListener("keydown", keyDownHandler, false);
 
 function keyDownHandler(e) {
