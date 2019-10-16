@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +9,25 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
+
 <body>
-    <canvas id ="gameWindow" width ="570" height="540" style ="border: 1px solid #000000;"></canvas>
-    
+    <div class="wrapper">
+        <div id="menu" class="main">
+            <div id="main">
+                <h1>EvadGency</h1>
+                <button onclick="start()" href="#" class="button" id="start">Start Game</button>
+                <button onclick="howto()" href="#" class="button" id="how">How to Play</button>
+                <button href="#" class="button" id="exit">Exit</button>
+            </div>
+        </div>
+    </div>
+    <canvas id="gameWindow" width="570" height="540" style="border: 1px solid #000000;"></canvas>
+
 </body>
-<script type ="text/javascript" src = "obstacleController.js"></script>
-    <script type ="text/javascript" src = "playerController.js"></script>
-    <script type ="text/javascript" src = "gameDraw.js"></script>
-    <script type ="text/javascript" src = "gameLoop.js"></script>
-    
-    
+<script type="text/javascript" src="obstacleController.js"></script>
+<script type="text/javascript" src="playerController.js"></script>
+<script type="text/javascript" src="gameDraw.js"></script>
+<script type="text/javascript" src="gameLoop.js"></script>
+<script src="menuJS.js"></script>
+
 </html>
