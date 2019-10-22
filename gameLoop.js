@@ -65,8 +65,6 @@ function update() {
 }
 
 function updateEntity(entity) {
-
-    //ctx.drawImage(entity.sprite, entity.x, entity.y, entity.width, entity.height);
     ctx.drawImage(entity.sprite, entity.sx, entity.sy, entity.srcW, entity.srcH, entity.x, entity.y, entity.width, entity.height);
     controlPlayer();
     for (var key in obstacles) {
@@ -76,7 +74,6 @@ function updateEntity(entity) {
     for (var key in collectables) {
         collideWith(collectables[key]);
     }
-
 }
 
 //Render Objects
@@ -98,8 +95,8 @@ function gameObject(gameObjectArray, gameObject, img, sx, sy, srcW, srcH, x, y, 
     }
     gameObjectArray.push(gameObject);
 }
-console.log(obstacles.length);
-//player controller
+
+//controllers
 var upPress = false;
 var downPress = false;
 var leftPress = false;
@@ -108,36 +105,21 @@ var rightPress = false;
 document.addEventListener("keydown", keyDownHandler, false);
 
 function keyDownHandler(e) {
-
     if (e.keyCode == 39) {
         rightPress = true;
-
     }
     if (e.keyCode == 37) {
         leftPress = true;
-
     }
     if (e.keyCode == 38) {
         upPress = true;
-
     }
     if (e.keyCode == 40) {
         downPress = true;
-
-    }
-}
-
-function obstacleMove(obstacle) {
-    if (obstacle.x < gameWindow.width + 100) {
-        obstacle.x = obstacle.x + obstacle.spd;
-
-    } else {
-        obstacle.x = -100;
     }
 }
 
 function controlPlayer() {
-
     if (upPress == true && player.y > 10) {
         player.y = player.y - player.spd;
         upPress = false;
@@ -153,6 +135,14 @@ function controlPlayer() {
     }
 }
 
+function obstacleMove(obstacle) {
+    if (obstacle.x < gameWindow.width + 100) {
+        obstacle.x = obstacle.x + obstacle.spd;
+    } else {
+        obstacle.x = -100;
+    }
+}
+
 //Colliders
 function collideWith(object) {
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
@@ -163,7 +153,7 @@ function collideWith(object) {
             console.log(gameMaster.lives);
         } else if (object.id.includes("collectable")) {
             console.log(collectables.indexOf(object));
-            collectables.splice(collectables.indexOf(object),1);
+            collectables.splice(collectables.indexOf(object), 1);
             gameMaster.coins += 1;
             gameMaster.score += 1;
             console.log("Player score is: " + gameMaster.score + "\nCoins collected: " + gameMaster.coins);
@@ -179,7 +169,6 @@ function drawBackground() {
 
     ctx.fillStyle = "blue";
     ctx.fillRect(0, 0, 570, 220);
-
 }
 
 update();
