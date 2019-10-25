@@ -16,10 +16,6 @@ canvas {
   box-sizing: border-box;
 }
 
-#menu.main {
-  background-image: url('imgs/menu-bg.png');
-}
-
 #main a {
   text-align: center;
   margin-bottom: 5px;
@@ -28,12 +24,11 @@ canvas {
 #main {
   height: 50%;
   overflow: auto;
-  margin: auto;
+  margin-top: 70px;
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  width: 572px;
+  height: 400px;
+  background-color: rgba(55, 170, 9, 1)
 }
 
 #main h1 {
@@ -44,12 +39,14 @@ canvas {
 
 .button {
   display: block;
-  width: 150px;
+  width: 300px;
   margin: 0 auto;
-  height: 30px;
+  margin-bottom: 20px;
+  height: 60px;
   line-height: 30px;
   border: 1px solid blue;
   color: white;
+  font-size: 25px;
   font-weight: bold;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   background-color: black;
