@@ -8,7 +8,7 @@ console.log("Game loaded!");
 var gameMaster = {
     difficulty: 1,
     score: 0,
-    time: 600,
+    time: 500,
     lives: 3,
     coins: 0,
     gameOn: true
@@ -24,13 +24,13 @@ var obstacles = [];
 var collectables = [];
 
 var img = new Image();
-img.src = 'sprites/frog.png';
+img.src = 'sprites/spritemap.png';
 var player = {
     sprite: img,
     sx: 0,
     sy: 0,
-    srcW: 500,
-    srcH: 384,
+    srcW: 80,
+    srcH: 80,
     x: 200,
     y: 500,
     width: 20,
@@ -55,7 +55,7 @@ function update() {
         updateEntity(collectables[key]);
     }
 
-    if (gameMaster.lives == 0 || gameMaster.time == 0) {
+    if (gameMaster.lives == 0 || gameMaster.time <= 0) {
         cancelAnimationFrame(update);
         clearInterval(timer);
         console.log("Game Over");
