@@ -16,7 +16,7 @@ var gameMaster = {
 
 var timer = setInterval(function () {
     gameMaster.time = gameMaster.time - timer;
-    console.log(gameMaster.time);
+    //console.log(gameMaster.time);
 }, 1000);
 
 //gameObjects
@@ -33,16 +33,16 @@ var player = {
     srcH: 80,
     x: 200,
     y: 500,
-    width: 20,
-    height: 20,
+    width: 40,
+    height: 40,
     spd: 10
 };
 
 //gameObject calls
-gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, 200, 200, 1, 20, 20, "obstacle1");
-gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, 300, 100, 1, 20, 20, "obstacle2");
-gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 300, 300, 1, 20, 20, "collectable1");
-gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 215, 400, 1, 20, 20, "collectable2");
+gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, 200, 200, 1, 40, 40, "obstacle1");
+gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, 300, 100, 1, 40, 40, "obstacle2");
+gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 300, 300, 1, 40, 40, "collectable1");
+gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 200, 210, 1, 40, 40, "collectable2");
 
 // Game Logic Updates
 function update() {
@@ -103,19 +103,24 @@ var leftPress = false;
 var rightPress = false;
 
 document.addEventListener("keydown", keyDownHandler, false);
+window.addEventListener("resize", resizeCanvas, false);
 
 function keyDownHandler(e) {
     if (e.keyCode == 39) {
         rightPress = true;
+        player.sx = 160;
     }
     if (e.keyCode == 37) {
         leftPress = true;
+        player.sx = 480;
     }
     if (e.keyCode == 38) {
         upPress = true;
+        player.sx = 0;
     }
     if (e.keyCode == 40) {
         downPress = true;
+        player.sx = 320;
     }
 }
 
@@ -145,14 +150,16 @@ function obstacleMove(obstacle) {
 
 //Colliders
 function collideWith(object) {
+    
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
         if (object.id.includes("obstacle")) {
             gameMaster.lives -= 1;
             player.x = 200;
             player.y = 500;
             console.log(gameMaster.lives);
+            console.log("Speed = " + obstacles[0].spd);
+            
         } else if (object.id.includes("collectable")) {
-            console.log(collectables.indexOf(object));
             collectables.splice(collectables.indexOf(object), 1);
             gameMaster.coins += 1;
             gameMaster.score += 1;
@@ -162,17 +169,25 @@ function collideWith(object) {
 }
 
 //Draw level
-function drawBackground() {
+function drawWindow() {
+    context.strokeStyle = 'blue';
+    context.lineWidth = '5';
+    context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+
+    /*
     ctx.fillStyle = "lime";
     ctx.fillRect(0, 440, 570, 45);
     ctx.fillRect(0, 220, 570, 45);
 
     ctx.fillStyle = "blue";
     ctx.fillRect(0, 0, 570, 220);
+    */
 }
 
+function resizeCanvas(){
+    ctx.width = window.innerWidth;
+    ctx.height = window.innerHeight;
+    console.log("Window Resized!");
+}
+resizeCanvas();
 update();
-
-
-
-
