@@ -39,20 +39,23 @@ var player = {
 };
 
 //gameObject calls
-gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, 200, 200, 1, 40, 40, "obstacle1");
-gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, 300, 100, 1, 40, 40, "obstacle2");
-gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 300, 300, 1, 40, 40, "collectable1");
-gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 200, 210, 1, 40, 40, "collectable2");
+obstacle1 = new gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, 200, 200, 3, 40, 40);
+obstacle2 = new gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, 300, 100, 3, 40, 40);
+collectable1 = new gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 300, 300, null, 40, 40);
+collectable2 = new gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 200, 210, null, 40, 40);
 
 // Game Logic Updates
 function update() {
     ctx.clearRect(0, 0, gameWindow.width, gameWindow.height);
-    updateEntity(player);
+    drawEntity(player);
     for (var key in obstacles) {
-        updateEntity(obstacles[key]);
+        drawEntity(obstacles[key]);
+        obstacleMove(obstacles[key]);
+        collideWith(obstacles[key]);
     }
     for (var key in collectables) {
-        updateEntity(collectables[key]);
+        drawEntity(collectables[key]);
+        collideWith(collectables[key]);
     }
 
     if (gameMaster.lives == 0 || gameMaster.time <= 0) {
@@ -62,38 +65,33 @@ function update() {
     } else {
         requestAnimationFrame(update);
     }
+    controlPlayer();
 }
 
-function updateEntity(entity) {
+function drawEntity(entity) {
     ctx.drawImage(entity.sprite, entity.sx, entity.sy, entity.srcW, entity.srcH, entity.x, entity.y, entity.width, entity.height);
-    controlPlayer();
-    for (var key in obstacles) {
-        obstacleMove(obstacles[key]);
-        collideWith(obstacles[key]);
-    }
-    for (var key in collectables) {
-        collideWith(collectables[key]);
-    }
+       
 }
 
 //Render Objects
-function gameObject(gameObjectArray, gameObject, img, sx, sy, srcW, srcH, x, y, spd, width, height, id) {
+function gameObject(gameObjectArray, gameObjectType, img, sx, sy, srcW, srcH, x, y, spd, width, height, id) {
     var gameObjectImg = new Image();
     gameObjectImg.src = img;
-    var gameObject = {
-        sprite: gameObjectImg,
-        sx: sx,
-        sy: sy,
-        srcW: srcW,
-        srcH: srcH,
-        width: width,
-        height: height,
-        x: x,
-        y: y,
-        spd: spd,
-        id: id
-    }
-    gameObjectArray.push(gameObject);
+    
+        this.sprite = gameObjectImg;
+        this.gameObjectType = gameObjectType;
+        this.sx = sx;
+        this.sy = sy;
+        this.srcW = srcW;
+        this.srcH = srcH;
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
+        this.spd = spd;
+        this.id = id;
+    
+    gameObjectArray.push(this);
 }
 
 //controllers
@@ -152,14 +150,14 @@ function obstacleMove(obstacle) {
 function collideWith(object) {
     
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
-        if (object.id.includes("obstacle")) {
+        if (object.gameObjectType.includes("obstacle")) {
             gameMaster.lives -= 1;
             player.x = 200;
             player.y = 500;
             console.log(gameMaster.lives);
             console.log("Speed = " + obstacles[0].spd);
             
-        } else if (object.id.includes("collectable")) {
+        } else if (object.gameObjectType.includes("collectable")) {
             collectables.splice(collectables.indexOf(object), 1);
             gameMaster.coins += 1;
             gameMaster.score += 1;
@@ -170,24 +168,19 @@ function collideWith(object) {
 
 //Draw level
 function drawWindow() {
-    context.strokeStyle = 'blue';
-    context.lineWidth = '5';
-    context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
-
-    /*
+    
     ctx.fillStyle = "lime";
     ctx.fillRect(0, 440, 570, 45);
     ctx.fillRect(0, 220, 570, 45);
 
     ctx.fillStyle = "blue";
     ctx.fillRect(0, 0, 570, 220);
-    */
+    
 }
 
 function resizeCanvas(){
     ctx.width = window.innerWidth;
     ctx.height = window.innerHeight;
-    console.log("Window Resized!");
+    
 }
-resizeCanvas();
 update();
