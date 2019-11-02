@@ -11,7 +11,7 @@ var gameMaster = {
     time: 500,
     lives: 3,
     coins: 0,
-    gameOn: true
+    gameOn: false
 }
 
 var timer = setInterval(function () {
