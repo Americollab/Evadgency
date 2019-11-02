@@ -1,5 +1,6 @@
 function start(){
     //enter startup code here
+    //gameMaster.gameOn = true;
 };
 
 function howto(){
