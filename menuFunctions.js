@@ -1,5 +1,7 @@
 //Function to start game on click of start button
 function start(){
+    //enter startup code here
+    gameMaster.gameOn = true;
     document.getElementById("main").style.display = "none";
 };
 
