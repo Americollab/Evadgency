@@ -11,7 +11,9 @@ var gameMaster = {
     time: 500,
     lives: 3,
     coins: 0,
-    gameOn: true
+    gameOn: true,
+    ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
+    ticksPerFrame: 6 //controls animation speed
 }
 
 var timer = setInterval(function () {
@@ -22,7 +24,8 @@ var timer = setInterval(function () {
 //intialize after pages load.
 function initialize() {
 
-    drawObstacles();
+    initObstacles();
+    initCollectables();
     update();
 }
 
@@ -32,26 +35,27 @@ function update() {
 
     drawBG();
     drawEntity(player);
+    drawGameObjects();
+    animateGameObjects();
+    checkLose();
 
-    for (var key in collectables) {
-        drawEntity(collectables[key]);
-        collideWith(collectables[key]);
+}
+
+
+
+function animateGameObjects(){
+    gameMaster.ticks += 1;
+    if (gameMaster.ticks > gameMaster.ticksPerFrame) {
+        gameMaster.ticks = 0;
+        
+        for(var key in collectables){
+            collectables[key].sx += 200;
+
+            if(collectables[key].sx > 1000){
+                collectables[key].sx = 0;
+            }
+        }
     }
-    for (var key in obstacles) {
-        drawEntity(obstacles[key]);
-        obstacleMove(obstacles[key]);
-        collideWith(obstacles[key]);
-    }
-
-    if (gameMaster.lives == 0 || gameMaster.time <= 0) {
-        cancelAnimationFrame(update);
-        clearInterval(timer);
-        console.log("Game Over");
-    } else {
-        requestAnimationFrame(update);
-    }
-
-
 }
 
 //controllers
@@ -96,6 +100,24 @@ function collideWith(object) {
             gameMaster.score += 1;
             console.log("Player score is: " + gameMaster.score + "\nCoins collected: " + gameMaster.coins);
         }
+    }
+}
+
+//win/lose states
+
+function checkWin (){
+    //Checks for win conditions
+    //Level Up!
+}
+
+function checkLose(){
+    if (gameMaster.lives == 0 || gameMaster.time <= 0) {
+        cancelAnimationFrame(update);
+        clearInterval(timer);
+        console.log("Game Over"); 
+        //Call to Game Over UI will go here
+    } else {
+        requestAnimationFrame(update);
     }
 }
 

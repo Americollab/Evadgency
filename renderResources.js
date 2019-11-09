@@ -18,7 +18,7 @@ var player = {
 
 //gameObject calls
 
-function drawObstacles(){
+function initObstacles(){
     var laneSpawn1 = [451,483,515,547];
     for( var i = 0; i < laneSpawn1.length; i++){
         new gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, Math.round(Math.random() * 640), laneSpawn1[i], 1, 32, 32);    
@@ -26,9 +26,20 @@ function drawObstacles(){
     
 }
 
-function drawCollectables(x){
-    var srcClip = [0,200,400,600,800,1000];
-    new gameObject(collectables, "collectable", "sprites/collectable.png", srcClip[x], 0, 200, 200, 300, 300, null, 32, 32);
+function initCollectables(x){
+    new gameObject(collectables, "collectable", "sprites/collectable.png", 0, 0, 200, 200, 250, 451, null, 32, 32);
+}
+
+function drawGameObjects() {
+    for (var key in collectables) {
+        drawEntity(collectables[key]);
+        collideWith(collectables[key]);
+    }
+    for (var key in obstacles) {
+        drawEntity(obstacles[key]);
+        obstacleMove(obstacles[key]);
+        collideWith(obstacles[key]);
+    }
 }
 
 //Constructs game objects
