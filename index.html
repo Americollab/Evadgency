@@ -7,21 +7,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
     <div id="wrapper">
-            <div id="main">
-                <img id="logo" src="./sprites/logo.png" alt="logo">
-                <button onclick="start()" class="button" id="start">Start Game</button>
-                <button onclick="howto()" class="button" id="how">How to Play</button>
-                <button onclick="javascript:window.close('','_parent','');" class="button" id="exit">Exit</button>
-            </div>
+        <div id="main">
+            <img id="logo" src="./sprites/logo.png" alt="logo">
+            <button onclick="start()" class="button" id="start">Start Game</button>
+            <button onclick="howto()" class="button" id="how">How to Play</button>
+            <button onclick="javascript:window.close('','_parent','');" class="button" id="exit">Exit</button>
+        </div>
     </div>
     <div id="uiWrapper">
         <div id="ui">
-            Lives: <span id="lives"></span>&nbsp;Time: <span id="time"></span>&nbsp;Score:<span id="score"></span>&nbsp;Coins: <span id="coins"></span>&nbsp;Difficulty: <span id="difficulty"></span>
+            <span class="title">Lives:</span>
+                <span class = "value" id="lives"></span>
+            <span class="title">Time:</span>
+                <span class = "value" id="time"></span>
+            <span class="title">Score:</span>
+                <span class = "value" id="score"></span>
+            <span class="title">Coins:</span>
+                <span class = "value" id="coins"></span>
+            <span>Difficulty:</span>
+                <span id="difficulty"></span>
         </div>
     </div>
     <canvas id="gameWindow" width="640" height="640" style="border: 1px solid #000000;"></canvas>

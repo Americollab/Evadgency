@@ -3,7 +3,6 @@ function start(){
     //enter startup code here
     gameMaster.gameOn = true;
     document.getElementById("wrapper").style.display = "none";
-    document.getElementById()
 };
 
 //Function to display alert box with game instructions

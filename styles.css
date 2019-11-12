@@ -82,3 +82,14 @@ canvas {
   z-index: 1;
 }
 
+#uiWrapper span {
+  font-family: 'Press Start 2P', cursive;
+}
+
+#ui span.title {
+  padding-right: 3px;
+}
+
+#ui span.value {
+  padding-right: 20px;
+}
