@@ -22,19 +22,30 @@ canvas {
   box-sizing: border-box;
 }
 
+#logo {
+  margin-bottom: 40px;
+}
+
+#wrapper {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(55, 170, 9, .85);
+  z-index: 2;
+}
+
 #main a {
   text-align: center;
   margin-bottom: 5px;
 }
 
 #main {
-  height: 50%;
-  overflow: auto;
-  margin-top: 70px;
-  position: absolute;
+  margin: auto;
   width: 572px;
-  height: 400px;
-  background-color: rgba(55, 170, 9, 1)
+  height: 350px;
 }
 
 #main h1 {
@@ -46,7 +57,7 @@ canvas {
 .button {
   display: block;
   width: 300px;
-  margin: 0 auto;
+  margin: auto;
   margin-bottom: 20px;
   height: 60px;
   line-height: 30px;
@@ -62,3 +73,12 @@ canvas {
 .button:hover {
   background-color: blue;
 }
+
+#uiWrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(55, 170, 9, 0);
+  z-index: 1;
+}
+
