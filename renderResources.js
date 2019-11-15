@@ -10,7 +10,7 @@ var player = {
     srcW: 80,
     srcH: 80,
     x: 320,
-    y: 608,
+    y: 576,
     width: 32,
     height: 32,
     spd: 32

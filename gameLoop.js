@@ -72,7 +72,7 @@ function playerController(e) {
     if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
         player.y = player.y - player.spd;
         player.sx = 0;
-    } else if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
+    } else if (e.keyCode == 40 && player.y < 576 && gameMaster.gameOn == true) {
         player.y = player.y + player.spd;
         player.sx = 320;
     } else if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
