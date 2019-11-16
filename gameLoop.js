@@ -22,7 +22,9 @@ var gameMaster = {
     time: 500,
     lives: 3,
     coins: 0,
-    gameOn: false
+    gameOn: true,
+    ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
+    ticksPerFrame: 6 //controls animation speed
 }
 
 var timer = setInterval(function () {
@@ -34,7 +36,9 @@ var timer = setInterval(function () {
 //intialize after pages load.
 function initialize() {
 
-    drawObstacles();
+    initObstacles();
+    initCollectables();
+    drawStaticObstacles();
     update();
 }
 
@@ -44,26 +48,25 @@ function update() {
 
     drawBG();
     drawEntity(player);
+    drawGameObjects();
+    animateGameObjects();
+    checkLose();
+    
+}
 
-    for (var key in collectables) {
-        drawEntity(collectables[key]);
-        collideWith(collectables[key]);
+function animateGameObjects(){
+    gameMaster.ticks += 1;
+    if (gameMaster.ticks > gameMaster.ticksPerFrame) {
+        gameMaster.ticks = 0;
+        
+        for(var key in collectables){
+            collectables[key].sx += 200;
+
+            if(collectables[key].sx > 1000){
+                collectables[key].sx = 0;
+            }
+        }
     }
-    for (var key in obstacles) {
-        drawEntity(obstacles[key]);
-        obstacleMove(obstacles[key]);
-        collideWith(obstacles[key]);
-    }
-
-    if (gameMaster.lives == 0 || gameMaster.time <= 0) {
-        cancelAnimationFrame(update);
-        clearInterval(timer);
-        console.log("Game Over");
-    } else {
-        requestAnimationFrame(update);
-    }
-
-
 }
 
 //controllers
@@ -71,17 +74,25 @@ document.addEventListener("keydown", playerController, false);
 function playerController(e) {
     if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
         player.y = player.y - player.spd;
-        player.sx = 0;
+        player.sx = 0; // up
     } else if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
         player.y = player.y + player.spd;
-        player.sx = 320;
+        player.sx = 64; // down
     } else if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
         player.x = player.x - player.spd;
-        player.sx = 480;
+        player.sx = 160; // left
     } else if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
         player.x = player.x + player.spd;
-        player.sx = 160;
+        player.sx = 96; // right
     }
+    
+    if(e.keyCode == 80){ //Press P to select a different player
+        player.sy += 32;
+        if (player.sy > 96){
+            player.sy = 32;
+        }
+    }
+    console.log(player.x + " - " + player.y);
 }
 
 function obstacleMove(obstacle) {
@@ -111,6 +122,24 @@ function collideWith(object) {
             this.document.getElementById('score').innerHTML = this.gameMaster.score
             this.document.getElementById('coins').innerHTML = this.gameMaster.coins
         }
+    }
+}
+
+// win/lose states
+
+function checkWin (){
+    // Checks for win conditions
+    // Level Up!
+}
+
+function checkLose(){
+    if (gameMaster.lives == 0 || gameMaster.time <= 0) {
+        cancelAnimationFrame(update);
+        clearInterval(timer);
+        console.log("Game Over"); 
+        //Call to Game Over UI will go here
+    } else {
+        requestAnimationFrame(update);
     }
 }
 
