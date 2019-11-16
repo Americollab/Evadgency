@@ -26,6 +26,7 @@ function initialize() {
 
     initObstacles();
     initCollectables();
+    drawStaticObstacles();
     update();
 }
 
@@ -38,10 +39,8 @@ function update() {
     drawGameObjects();
     animateGameObjects();
     checkLose();
-
+    
 }
-
-
 
 function animateGameObjects(){
     gameMaster.ticks += 1;
@@ -63,17 +62,25 @@ document.addEventListener("keydown", playerController, false);
 function playerController(e) {
     if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
         player.y = player.y - player.spd;
-        player.sx = 0;
+        player.sx = 0; // up
     } else if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
         player.y = player.y + player.spd;
-        player.sx = 320;
+        player.sx = 64; // down
     } else if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
         player.x = player.x - player.spd;
-        player.sx = 480;
+        player.sx = 160; // left
     } else if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
         player.x = player.x + player.spd;
-        player.sx = 160;
+        player.sx = 96; // right
     }
+    
+    if(e.keyCode == 80){ //Press P to select a different player
+        player.sy += 32;
+        if (player.sy > 96){
+            player.sy = 32;
+        }
+    }
+    console.log(player.x + " - " + player.y);
 }
 
 function obstacleMove(obstacle) {
@@ -103,11 +110,11 @@ function collideWith(object) {
     }
 }
 
-//win/lose states
+// win/lose states
 
 function checkWin (){
-    //Checks for win conditions
-    //Level Up!
+    // Checks for win conditions
+    // Level Up!
 }
 
 function checkLose(){
