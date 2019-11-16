@@ -1,9 +1,11 @@
+var gameStart = false;
+
 //gameWindow
 var ctx = document.getElementById("gameWindow").getContext("2d");
 ctx.font = '30px Arial';
 
 console.log("Game loaded!");
-window.onload = function (){
+window.onload = function () {
     //Gets lives variable and displays in UI
     document.getElementById('lives').innerHTML = this.gameMaster.lives;
     //Gets time variable and displays in UI
@@ -27,19 +29,22 @@ var gameMaster = {
     ticksPerFrame: 6 //controls animation speed
 }
 
-var timer = setInterval(function () {
-    gameMaster.time--;
-    console.log(gameMaster.time);
-    this.document.getElementById('time').innerHTML = this.gameMaster.time
-}, 1000);
+function timer() {
+    var timer = setInterval(function () {
+        gameMaster.time--;
+        console.log(gameMaster.time);
+        this.document.getElementById('time').innerHTML = this.gameMaster.time
+    }, 1000);
+}
 
 //intialize after pages load.
 function initialize() {
-
     initObstacles();
     initCollectables();
     drawStaticObstacles();
+
     update();
+    gameStart = true;
 }
 
 // Game Logic Updates
@@ -71,6 +76,7 @@ function animateGameObjects(){
 
 //controllers
 document.addEventListener("keydown", playerController, false);
+
 function playerController(e) {
     if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
         player.y = player.y - player.spd;
