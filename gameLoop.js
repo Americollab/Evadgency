@@ -1,21 +1,13 @@
-var gameStart = false;
+var gameStart, timeSet , ctx = document.getElementById("gameWindow").getContext("2d");
 
-//gameWindow
-var ctx = document.getElementById("gameWindow").getContext("2d");
-ctx.font = '30px Arial';
-
-console.log("Game loaded!");
 window.onload = function () {
-    //Gets lives variable and displays in UI
-    document.getElementById('lives').innerHTML = this.gameMaster.lives;
-    //Gets time variable and displays in UI
-    this.document.getElementById('time').innerHTML = this.gameMaster.time
-    //Gets score variable and displays in UI
-    this.document.getElementById('score').innerHTML = this.gameMaster.score
-    //Gets coins variable and displays in UI
-    this.document.getElementById('coins').innerHTML = this.gameMaster.coins
-    //Gets difficulty variable and displays in UI
-    this.document.getElementById('difficulty').innerHTML = this.gameMaster.difficulty
+    document.getElementById('lives').innerHTML = gameMaster.lives;
+    document.getElementById('time').innerHTML = gameMaster.time;
+    document.getElementById('score').innerHTML = gameMaster.score;
+    document.getElementById('coins').innerHTML = gameMaster.coins;
+    document.getElementById('difficulty').innerHTML = gameMaster.difficulty;
+    initialize();
+    console.log("Game loaded!");
 }
 //GameMaster Object - Controls the game
 var gameMaster = {
@@ -24,17 +16,18 @@ var gameMaster = {
     time: 500,
     lives: 3,
     coins: 0,
-    gameOn: true,
+    gameOn: false,
     ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
     ticksPerFrame: 6 //controls animation speed
 }
 
 function timer() {
-    var timer = setInterval(function () {
+    timeSet = setInterval (countDown, 1000);
+    function countDown(){
         gameMaster.time--;
         console.log(gameMaster.time);
-        this.document.getElementById('time').innerHTML = this.gameMaster.time
-    }, 1000);
+        document.getElementById('time').innerHTML = gameMaster.time;
+    }
 }
 
 //intialize after pages load.
@@ -42,32 +35,32 @@ function initialize() {
     initObstacles();
     initCollectables();
     drawStaticObstacles();
-
     update();
-    gameStart = true;
 }
 
 // Game Logic Updates
 function update() {
-    ctx.clearRect(0, 0, gameWindow.width, gameWindow.height); //Clears sprites 
-
+    ctx.clearRect(0, 0, gameWindow.width, gameWindow.height); //Clears sprites every frame
     drawBG();
     drawEntity(player);
     drawGameObjects();
     animateGameObjects();
+    checkWin();
     checkLose();
-    
+    gameStart = requestAnimationFrame(update);
 }
 
-function animateGameObjects(){
+
+
+function animateGameObjects() {
     gameMaster.ticks += 1;
     if (gameMaster.ticks > gameMaster.ticksPerFrame) {
         gameMaster.ticks = 0;
-        
-        for(var key in collectables){
+
+        for (var key in collectables) {
             collectables[key].sx += 200;
 
-            if(collectables[key].sx > 1000){
+            if (collectables[key].sx > 1000) {
                 collectables[key].sx = 0;
             }
         }
@@ -91,12 +84,27 @@ function playerController(e) {
         player.x = player.x + player.spd;
         player.sx = 96; // right
     }
-    
-    if(e.keyCode == 80){ //Press P to select a different player
+
+    if (e.keyCode == 80) { //Press P to select a different player
         player.sy += 32;
-        if (player.sy > 96){
+        if (player.sy > 96) {
             player.sy = 32;
         }
+    }
+    if (e.keyCode == 27) {
+        if (gameMaster.gameOn == true) {
+            gameMaster.gameOn = false;
+            isPause();
+            document.getElementById("resume").className = "button";
+            document.getElementById("start").className = "hidden";
+            document.getElementById("wrapper").style.display = "flex";
+        } else if (gameMaster.gameOn == false){
+            document.getElementById("wrapper").style.display = "none";
+            gameMaster.gameOn = true;
+            timer();
+            gameStart = requestAnimationFrame(update);
+            
+        };
     }
     console.log(player.x + " - " + player.y);
 }
@@ -131,22 +139,23 @@ function collideWith(object) {
     }
 }
 
-// win/lose states
-
-function checkWin (){
+// win-lose states
+function checkWin() {
     // Checks for win conditions
     // Level Up!
 }
 
-function checkLose(){
+function checkLose() {
     if (gameMaster.lives == 0 || gameMaster.time <= 0) {
-        cancelAnimationFrame(update);
-        clearInterval(timer);
-        console.log("Game Over"); 
-        //Call to Game Over UI will go here
-    } else {
-        requestAnimationFrame(update);
+        isPause();
+        document.getElementById('time').innerHTML = "Game Over";
+        setTimeout(function () {
+            //Game Over Screen 
+        }, 5000);
     }
 }
-
-initialize();
+//pause game
+function isPause() {
+    cancelAnimationFrame(gameStart);
+    clearInterval(timeSet);
+}
