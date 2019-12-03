@@ -25,6 +25,7 @@ var gameMaster = {
     lives: 3,
     coins: 0,
     gameOn: true,
+    victoryPoints: 9,
     ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
     ticksPerFrame: 6 //controls animation speed
 }
@@ -55,19 +56,20 @@ function update() {
     drawEntity(player);
     drawGameObjects();
     animateGameObjects();
+    checkWin();
     checkLose();
-    
+
 }
 
-function animateGameObjects(){
+function animateGameObjects() {
     gameMaster.ticks += 1;
     if (gameMaster.ticks > gameMaster.ticksPerFrame) {
         gameMaster.ticks = 0;
-        
-        for(var key in collectables){
+
+        for (var key in collectables) {
             collectables[key].sx += 200;
 
-            if(collectables[key].sx > 1000){
+            if (collectables[key].sx > 1000) {
                 collectables[key].sx = 0;
             }
         }
@@ -91,10 +93,10 @@ function playerController(e) {
         player.x = player.x + player.spd;
         player.sx = 96; // right
     }
-    
-    if(e.keyCode == 80){ //Press P to select a different player
+
+    if (e.keyCode == 80) { //Press P to select a different player
         player.sy += 32;
-        if (player.sy > 96){
+        if (player.sy > 96) {
             player.sy = 32;
         }
     }
@@ -133,16 +135,28 @@ function collideWith(object) {
 
 // win/lose states
 
-function checkWin (){
+function checkWin() {
+    var winPos = [32, 96, 160, 224, 288, 352, 416, 480, 544];
+    
     // Checks for win conditions
-    // Level Up!
+    if (player.y == 64 && winPos.includes(player.x)) {
+        new gameObject(staticObjects, "staticObject", "sprites/SpriteSheet.png", player.sx, player.sy, player.srcW, player.srcH, player.x, player.y, null, player.width, player.height);
+
+        player.x = 320;
+        player.y = 608;
+        player.score += 100;
+        gameMaster.victoryPoints--;
+    } else if (gameMaster.victoryPoints == 0){
+        console.log("Level beaten!");
+    }
+    // Level Up?
 }
 
-function checkLose(){
+function checkLose() {
     if (gameMaster.lives == 0 || gameMaster.time <= 0) {
         cancelAnimationFrame(update);
         clearInterval(timer);
-        console.log("Game Over"); 
+        console.log("Game Over");
         //Call to Game Over UI will go here
     } else {
         requestAnimationFrame(update);
