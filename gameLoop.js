@@ -124,7 +124,7 @@ function collideWith(object) {
         if (object.gameObjectType.includes("obstacle")) {
             gameMaster.lives -= 1;
             player.x = 320;
-            player.y = 608;
+            player.y = 576;
             console.log(gameMaster.lives);
             document.getElementById('lives').innerHTML = this.gameMaster.lives;
 
