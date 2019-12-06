@@ -142,17 +142,7 @@ function collideWith(object) {
 // win-lose states
 function checkWin() {
     // Checks for win conditions
-    if (player.y == 64 && winPos.includes(player.x)) {
-        new gameObject(staticObjects, "staticObject", "sprites/SpriteSheet.png", player.sx, player.sy, player.srcW, player.srcH, player.x, player.y, null, player.width, player.height);
-
-        player.x = 320;
-        player.y = 608;
-        player.score += 100;
-        gameMaster.victoryPoints--;
-    } else if (gameMaster.victoryPoints == 0){
-        console.log("Level beaten!");
-    }
-    // Level Up?
+    // Level Up!
 }
 
 function checkLose() {
