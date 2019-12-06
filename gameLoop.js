@@ -18,7 +18,9 @@ var gameMaster = {
     coins: 0,
     gameOn: false,
     ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
-    ticksPerFrame: 6 //controls animation speed
+    ticksPerFrame: 6, //controls animation speed
+    static: 1, //counter for creating static obstacles
+    moving: 1 //counter for creating moving obstacles
 }
 
 function timer() {
@@ -33,6 +35,12 @@ function timer() {
 //intialize after pages load.
 function initialize() {
     initObstacles();
+    initObstacles();
+    initObstacles();
+    initObstacles(); //intialized multiple times with a counter to create different rows
+    initStaticObstacles();
+    initStaticObstacles();
+    initStaticObstacles(); //intialized multiple times with a counter to create different rows
     initCollectables();
     drawStaticObstacles();
     update();
