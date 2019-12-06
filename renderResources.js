@@ -99,6 +99,7 @@ function drawStaticObstacles() {
         new gameObject(staticObjects, "staticObject", "sprites/SpriteSheet.png", (wallPos[i])[0], (wallPos[i])[1], 32, 32, (wallPos[i])[2], (wallPos[i])[3], null, 32, 32); //Might have issue with srcX and srcY being reversed somehow
     }
     new gameObject(staticObjects, "staticObject", "sprites/SpriteSheet.png", 224, 0, 32, 32, 608, 64, null, 32, 32);
+    new gameObject(staticObjects, "staticObject", "sprites/36px.png", 0, 0, 36, 36, 352, 576, null, 32, 32);
 }
 
 function resizeCanvas() {
