@@ -16,7 +16,7 @@ var gameMaster = {
     time: 500,
     lives: 3,
     coins: 0,
-    gameOn: false,
+    gameOn: true,
     ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
     ticksPerFrame: 6 //controls animation speed
 }
@@ -49,8 +49,6 @@ function update() {
     checkLose();
     gameStart = requestAnimationFrame(update);
 }
-
-
 
 function animateGameObjects() {
     gameMaster.ticks += 1;
@@ -85,7 +83,7 @@ function playerController(e) {
         player.sx = 96; // right
     }
 
-    if (e.keyCode == 80) { //Press P to select a different player
+    if (e.keyCode == 80) { //Press P to select a different avatar
         player.sy += 32;
         if (player.sy > 96) {
             player.sy = 32;
