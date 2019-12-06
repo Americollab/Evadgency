@@ -20,7 +20,7 @@ var player = {
 function initObstacles() {
     var laneSpawn1 = [451, 483, 515, 547];
     for (var i = 0; i < laneSpawn1.length; i++) {
-        new gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, Math.round(Math.random() * 640), laneSpawn1[i], 1, 32, 32);
+        new gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, Math.round(Math.random() * 640), laneSpawn1[i], Math.floor(Math.random() * 4) + 1, 32, 32);
     }
 }
 

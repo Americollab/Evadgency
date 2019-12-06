@@ -112,7 +112,6 @@ function playerController(e) {
 function obstacleMove(obstacle) {
     if (obstacle.x < gameWindow.width + 100) {
         obstacle.x += obstacle.spd;
-
     } else {
         obstacle.x = -100;
     }
@@ -122,6 +121,7 @@ function obstacleMove(obstacle) {
 function collideWith(object) {
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
         if (object.gameObjectType.includes("obstacle")) {
+            
             gameMaster.lives -= 1;
             player.x = 320;
             player.y = 576;
