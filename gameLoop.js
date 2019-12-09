@@ -19,7 +19,9 @@ var gameMaster = {
     gameOn: true,
     victoryPoints: 9,
     ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
-    ticksPerFrame: 6 //controls animation speed
+    ticksPerFrame: 6, //controls animation speed
+    static: 1, //counter for creating static obstacles
+    moving: 1 //counter for creating moving obstacles
 }
 
 function timer() {
@@ -34,6 +36,12 @@ function timer() {
 //intialize after pages load.
 function initialize() {
     initObstacles();
+    initObstacles();
+    initObstacles();
+    initObstacles(); //intialized multiple times with a counter to create different rows
+    initStaticObstacles();
+    initStaticObstacles();
+    initStaticObstacles(); //intialized multiple times with a counter to create different rows
     initCollectables();
     drawStaticObstacles();
     update();
@@ -111,7 +119,6 @@ function playerController(e) {
 function obstacleMove(obstacle) {
     if (obstacle.x < gameWindow.width + 100) {
         obstacle.x += obstacle.spd;
-
     } else {
         obstacle.x = -100;
     }
@@ -121,9 +128,10 @@ function obstacleMove(obstacle) {
 function collideWith(object) {
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
         if (object.gameObjectType.includes("obstacle")) {
+            
             gameMaster.lives -= 1;
             player.x = 320;
-            player.y = 608;
+            player.y = 576;
             console.log(gameMaster.lives);
             document.getElementById('lives').innerHTML = this.gameMaster.lives;
 
