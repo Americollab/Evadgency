@@ -16,12 +16,10 @@ var gameMaster = {
     time: 500,
     lives: 3,
     coins: 0,
-    gameOn: true,
+    gameOn: false,
     victoryPoints: 9,
     ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
     ticksPerFrame: 6, //controls animation speed
-    static: 1, //counter for creating static obstacles
-    moving: 1 //counter for creating moving obstacles
 }
 
 function timer() {
@@ -35,15 +33,7 @@ function timer() {
 
 //intialize after pages load.
 function initialize() {
-    initObstacles();
-    initObstacles();
-    initObstacles();
-    initObstacles(); //intialized multiple times with a counter to create different rows
-    initStaticObstacles();
-    initStaticObstacles();
-    initStaticObstacles(); //intialized multiple times with a counter to create different rows
-    initCollectables();
-    drawStaticObstacles();
+    initObjects();
     update();
 }
 
@@ -153,7 +143,7 @@ function checkWin() {
     
     // Checks for win conditions
     if (player.y == 64 && winPos.includes(player.x)) {
-        new gameObject(staticObjects, "staticObject", "sprites/SpriteSheet.png", player.sx, player.sy, player.srcW, player.srcH, player.x, player.y, null, player.width, player.height);
+        new gameObject(staticObjects, "staticObject", 'sprites/SpriteSheet32x32.png', player.sx, player.sy, player.srcW, player.srcH, player.x, player.y, null, player.width, player.height);
 
         player.x = 320;
         player.y = 608;
