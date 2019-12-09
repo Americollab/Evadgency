@@ -39,6 +39,7 @@ function initialize() {
 
 // Game Logic Updates
 function update() {
+    gameStart = requestAnimationFrame(update);
     ctx.clearRect(0, 0, gameWindow.width, gameWindow.height); //Clears sprites every frame
     drawBG();
     drawEntity(player);
@@ -46,7 +47,7 @@ function update() {
     animateGameObjects();
     checkWin();
     checkLose();
-    gameStart = requestAnimationFrame(update);
+    
 }
 
 function animateGameObjects() {

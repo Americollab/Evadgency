@@ -77,7 +77,7 @@ function drawBG() {
     ctx.fillRect(0, 410, 570, 96);
     //Carpet
     carpet = new Image();
-    carpet.src = 'sprites/TileBlueGreen.png';
+    carpet.src = 'sprites/Green2.png';
     var carpetPattern = ctx.createPattern(carpet, 'repeat');
     ctx.fillStyle = carpetPattern;
     ctx.fillRect(0, 580, window.innerWidth, 64);
