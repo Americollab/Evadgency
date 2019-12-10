@@ -94,7 +94,13 @@ function resizeCanvas() {
 function initObstacles() { //if statements to initialize same code for different rows to create full layout
     var laneSpawn1 = [96, 160, 192, 224, 451, 483, 515, 547, 288, 320, 352, 384];
     for (var i = 0; i < laneSpawn1.length; i++) {
-        new gameObject(obstacles, "obstacle", "sprites/obstacle.png", 0, 0, 500, 385, Math.round(Math.random() * 576), laneSpawn1[i], Math.floor(Math.random() * 4) + 1, 32, 32);
+        var temp = Math.round(Math.random() * 100) + 1;
+        if (temp < 50){
+            new gameObject(obstacles, "obstacleRight", "sprites/obstacle.png", 0, 0, 500, 385, Math.round(Math.random() * 576), laneSpawn1[i], Math.floor(Math.random() * 4) + 1, 32, 32);
+        } else {
+            new gameObject(obstacles, "obstacleLeft", "sprites/obstacle.png", 0, 0, 500, 385, Math.round(Math.random() * 576), laneSpawn1[i], Math.floor(Math.random() * 4) + 1, 32, 32);
+        }
+        
     }
 }
 

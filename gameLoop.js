@@ -1,4 +1,4 @@
-var gameStart, timeSet , ctx = document.getElementById("gameWindow").getContext("2d");
+var gameStart, timeSet, ctx = document.getElementById("gameWindow").getContext("2d");
 
 window.onload = function () {
     document.getElementById('lives').innerHTML = gameMaster.lives;
@@ -23,8 +23,8 @@ var gameMaster = {
 }
 
 function timer() {
-    timeSet = setInterval (countDown, 1000);
-    function countDown(){
+    timeSet = setInterval(countDown, 1000);
+    function countDown() {
         gameMaster.time--;
         console.log(gameMaster.time);
         document.getElementById('time').innerHTML = gameMaster.time;
@@ -47,7 +47,7 @@ function update() {
     animateGameObjects();
     checkWin();
     checkLose();
-    
+
 }
 
 function animateGameObjects() {
@@ -96,22 +96,30 @@ function playerController(e) {
             document.getElementById("resume").className = "button";
             document.getElementById("start").className = "hidden";
             document.getElementById("wrapper").style.display = "flex";
-        } else if (gameMaster.gameOn == false){
+        } else if (gameMaster.gameOn == false) {
             document.getElementById("wrapper").style.display = "none";
             gameMaster.gameOn = true;
             timer();
             gameStart = requestAnimationFrame(update);
-            
+
         };
     }
     console.log(player.x + " - " + player.y);
 }
 
 function obstacleMove(obstacle) {
-    if (obstacle.x < gameWindow.width + 100) {
-        obstacle.x += obstacle.spd;
-    } else {
-        obstacle.x = -100;
+    if (obstacle.gameObjectType == "obstacleRight") {
+        if (obstacle.x < gameWindow.width + 100) {
+            obstacle.x += obstacle.spd;
+        } else {
+            obstacle.x = -100;
+        }
+    } else if(obstacle.gameObjectType == "obstacleLeft"){
+        if (obstacle.x > -100) {
+            obstacle.x -= obstacle.spd;
+        } else {
+            obstacle.x = gameWindow.width + 100;
+        } 
     }
 }
 
@@ -119,7 +127,7 @@ function obstacleMove(obstacle) {
 function collideWith(object) {
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
         if (object.gameObjectType.includes("obstacle")) {
-            
+
             gameMaster.lives -= 1;
             player.x = 320;
             player.y = 576;
@@ -141,7 +149,7 @@ function collideWith(object) {
 
 function checkWin() {
     var winPos = [32, 96, 160, 224, 288, 352, 416, 480, 544];
-    
+
     // Checks for win conditions
     if (player.y == 64 && winPos.includes(player.x)) {
         new gameObject(staticObjects, "staticObject", 'sprites/SpriteSheet32x32.png', player.sx, player.sy, player.srcW, player.srcH, player.x, player.y, null, player.width, player.height);
@@ -150,7 +158,7 @@ function checkWin() {
         player.y = 608;
         player.score += 100;
         gameMaster.victoryPoints--;
-    } else if (gameMaster.victoryPoints == 0){
+    } else if (gameMaster.victoryPoints == 0) {
         console.log("Level beaten!");
     }
     // Level Up?
