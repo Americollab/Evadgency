@@ -1,15 +1,7 @@
-var gameStart, timeSet, ctx = document.getElementById("gameWindow").getContext("2d");
-
-window.onload = function () {
-    document.getElementById('lives').innerHTML = gameMaster.lives;
-    document.getElementById('time').innerHTML = gameMaster.time;
-    document.getElementById('score').innerHTML = gameMaster.score;
-    document.getElementById('coins').innerHTML = gameMaster.coins;
-    document.getElementById('difficulty').innerHTML = gameMaster.difficulty;
-    initialize();
-    console.log("Game loaded!");
-}
-//GameMaster Object - Controls the game
+var gameStart,
+    timeSet,
+    ctx = document.getElementById("gameWindow").getContext("2d");
+//GameMaster Object - Holds important game values
 var gameMaster = {
     difficulty: 1,
     score: 0,
@@ -17,17 +9,23 @@ var gameMaster = {
     lives: 3,
     coins: 0,
     gameOn: false,
-    victoryPoints: 9,
+    victoryPoints: 1,
     ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
-    ticksPerFrame: 6, //controls animation speed
+    ticksPerFrame: 12, //controls animation speed
+}
+
+window.onload = function () {
+    this.updateUIElements();
+    initialize();
+    console.log("Game loaded!");
 }
 
 function timer() {
     timeSet = setInterval(countDown, 1000);
     function countDown() {
         gameMaster.time--;
-        console.log(gameMaster.time);
-        document.getElementById('time').innerHTML = gameMaster.time;
+        //console.log(gameMaster.time);
+        updateUIElements();
     }
 }
 
@@ -47,7 +45,6 @@ function update() {
     animateGameObjects();
     checkWin();
     checkLose();
-
 }
 
 function animateGameObjects() {
@@ -56,9 +53,8 @@ function animateGameObjects() {
         gameMaster.ticks = 0;
 
         for (var key in collectables) {
-            collectables[key].sx += 200;
-
-            if (collectables[key].sx > 1000) {
+            collectables[key].sx += 64;
+            if (collectables[key].sx > 64*3) {
                 collectables[key].sx = 0;
             }
         }
@@ -69,27 +65,29 @@ function animateGameObjects() {
 document.addEventListener("keydown", playerController, false);
 
 function playerController(e) {
+    castRay();
+    console.log(castRay());
     if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
         player.y = player.y - player.spd;
         player.sx = 0; // up
     } else if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
         player.y = player.y + player.spd;
-        player.sx = 64; // down
+        player.sx = 128; // down
     } else if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
         player.x = player.x - player.spd;
-        player.sx = 160; // left
+        player.sx = 256; // left
     } else if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
         player.x = player.x + player.spd;
-        player.sx = 96; // right
+        player.sx = 320; // right
     }
 
     if (e.keyCode == 80) { //Press P to select a different avatar
-        player.sy += 32;
-        if (player.sy > 96) {
-            player.sy = 32;
+        player.sy += 64;
+        if (player.sy > 64 * 4) {
+            player.sy = 64;
         }
     }
-    if (e.keyCode == 27) {
+    if (e.keyCode == 27) { //Press Esc to pause game
         if (gameMaster.gameOn == true) {
             gameMaster.gameOn = false;
             isPause();
@@ -114,54 +112,73 @@ function obstacleMove(obstacle) {
         } else {
             obstacle.x = -100;
         }
-    } else if(obstacle.gameObjectType == "obstacleLeft"){
+    } else if (obstacle.gameObjectType == "obstacleLeft") {
         if (obstacle.x > -100) {
             obstacle.x -= obstacle.spd;
         } else {
             obstacle.x = gameWindow.width + 100;
-        } 
+        }
     }
 }
 
 //Colliders
 function collideWith(object) {
+
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
         if (object.gameObjectType.includes("obstacle")) {
-
             gameMaster.lives -= 1;
             player.x = 320;
             player.y = 576;
             console.log(gameMaster.lives);
-            document.getElementById('lives').innerHTML = this.gameMaster.lives;
+            document.getElementById('lives').innerHTML = gameMaster.lives;
 
         } else if (object.gameObjectType.includes("collectable")) {
             collectables.splice(collectables.indexOf(object), 1);
             gameMaster.coins += 1;
             gameMaster.score += 1;
             console.log("Player score is: " + gameMaster.score + "\nCoins collected: " + gameMaster.coins);
-            this.document.getElementById('score').innerHTML = this.gameMaster.score
-            this.document.getElementById('coins').innerHTML = this.gameMaster.coins
+            document.getElementById('score').innerHTML = gameMaster.score
+            document.getElementById('coins').innerHTML = gameMaster.coins
+
+        } else if (object.gameObjectType.includes("staticObject")) {
+            console.log("Clipping Error! Ray Cast in PlayerController failed.");
         }
     }
 }
 
-// win/lose states
+function castRay() {
+    // rayCast right,left,down,up
+    var rayCast = [player.x + player.spd, player.x - player.spd, player.y + player.spd, player.y - player.spd];
+    var temp;
+    return true;
+    for (i = 0; i < staticObjects.length; i++) {
+        if(rayCast[3] == staticObjects[i].y && player.x == staticObjects[i].x){  
+            temp = "up";
+        } else {
+            temp = "";
+        }
+    }
+    
+}
 
+// win/lose states
 function checkWin() {
     var winPos = [32, 96, 160, 224, 288, 352, 416, 480, 544];
 
     // Checks for win conditions
     if (player.y == 64 && winPos.includes(player.x)) {
-        new gameObject(staticObjects, "staticObject", 'sprites/SpriteSheet32x32.png', player.sx, player.sy, player.srcW, player.srcH, player.x, player.y, null, player.width, player.height);
-
+        new gameObject(staticObjects, "staticObject", 'sprites/spritesheet.png', player.sx, player.sy, player.srcW, player.srcH, player.x, player.y, null, player.width, player.height);
         player.x = 320;
-        player.y = 608;
-        player.score += 100;
+        player.y = 576;
+        gameMaster.score += 100;
         gameMaster.victoryPoints--;
     } else if (gameMaster.victoryPoints == 0) {
-        console.log("Level beaten!");
+        isPause();
+        document.getElementById("next").className = "button";
+        document.getElementById("resume").className = "hidden";
+        document.getElementById("start").className = "hidden";
+        document.getElementById("wrapper").style.display = "flex";
     }
-    // Level Up?
 }
 
 function checkLose() {
