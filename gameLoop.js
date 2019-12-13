@@ -22,6 +22,7 @@ window.onload = function () {
 
 function timer() {
     timeSet = setInterval(countDown, 1000);
+
     function countDown() {
         gameMaster.time--;
         //console.log(gameMaster.time);
@@ -54,7 +55,7 @@ function animateGameObjects() {
 
         for (var key in collectables) {
             collectables[key].sx += 64;
-            if (collectables[key].sx > 64*3) {
+            if (collectables[key].sx > 64 * 3) {
                 collectables[key].sx = 0;
             }
         }
@@ -93,6 +94,7 @@ function playerController(e) {
             isPause();
             document.getElementById("resume").className = "button";
             document.getElementById("start").className = "hidden";
+            document.getElementById("next").className = "hidden";
             document.getElementById("wrapper").style.display = "flex";
         } else if (gameMaster.gameOn == false) {
             document.getElementById("wrapper").style.display = "none";
@@ -127,8 +129,16 @@ function collideWith(object) {
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
         if (object.gameObjectType.includes("obstacle")) {
             gameMaster.lives -= 1;
-            player.x = 320;
-            player.y = 576;
+            player.sx = 64 * 4;
+            player.sy = 64 * 5;
+            drawEntity(player);
+            if (gameMaster.lives != 0) {
+                player.x = 320;
+                player.y = 576;
+                player.sx = 0;
+                player.sy = 128;
+                drawEntity(player);
+            }
             console.log(gameMaster.lives);
             document.getElementById('lives').innerHTML = gameMaster.lives;
 
@@ -152,13 +162,12 @@ function castRay() {
     var temp;
     return true;
     for (i = 0; i < staticObjects.length; i++) {
-        if(rayCast[3] == staticObjects[i].y && player.x == staticObjects[i].x){  
+        if (rayCast[3] == staticObjects[i].y && player.x == staticObjects[i].x) {
             temp = "up";
         } else {
             temp = "";
         }
     }
-    
 }
 
 // win/lose states
