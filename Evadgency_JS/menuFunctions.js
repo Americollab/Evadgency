@@ -1,4 +1,12 @@
+import { gameMaster, timer, update } from "./gameLoop.js";
+import { nextLevel } from "./gameObjects.js";
+
 //Function to start game on click of start button
+document.getElementById("start").addEventListener("click", start);
+document.getElementById("next").addEventListener("click", nextLevel);
+document.getElementById("how").addEventListener("click", howto);
+document.getElementById("resume").addEventListener("click", resume);
+
 function start() {
     gameMaster.gameOn = true;
     timer();
@@ -9,24 +17,8 @@ function resume() {
     document.getElementById("wrapper").style.display = "none";
     gameMaster.gameOn = true;
     timer();
-    gameStart = requestAnimationFrame(update);
+    requestAnimationFrame(update);
 }
-
-function nextLevel(){
-    gameMaster.gameOn = true;
-    gameMaster.difficulty +=1;
-    gameMaster.victoryPoints = gameMaster.difficulty;
-    this.updateUIElements();
-    obstacles = [];
-    collectables = [];
-    staticObjects = [];
-    timer();
-    initObjects();
-    gameStart = requestAnimationFrame(update);
-    document.getElementById("wrapper").style.display = "none";
-    
-    
-};
 
 //Function to display alert box with game instructions
 function howto() {

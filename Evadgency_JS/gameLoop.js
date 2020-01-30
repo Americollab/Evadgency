@@ -1,8 +1,11 @@
-var gameStart,
-    timeSet,
-    ctx = document.getElementById("gameWindow").getContext("2d");
+import { gameObject, collectables, staticObjects, player } from "./gameObjects.js";
+import * as render from "./renderResources.js";
+
+export var gameStart,
+    timeSet;
+
 //GameMaster Object - Holds important game values
-var gameMaster = {
+export var gameMaster = {
     difficulty: 1,
     score: 0,
     time: 500,
@@ -15,12 +18,12 @@ var gameMaster = {
 }
 
 window.onload = function () {
-    this.updateUIElements();
+    updateUIElements();
     initialize();
     console.log("Game loaded!");
 }
 
-function timer() {
+export function timer() {
     timeSet = setInterval(countDown, 1000);
 
     function countDown() {
@@ -32,17 +35,17 @@ function timer() {
 
 //intialize after pages load.
 function initialize() {
-    initObjects();
+    render.initObjects();
     update();
 }
 
 // Game Logic Updates
-function update() {
+export function update() {
     gameStart = requestAnimationFrame(update);
-    ctx.clearRect(0, 0, gameWindow.width, gameWindow.height); //Clears sprites every frame
-    drawBG();
-    drawEntity(player);
-    drawGameObjects();
+    render.ctx.clearRect(0, 0, gameWindow.width, gameWindow.height); //Clears sprites every frame
+    render.drawBG();
+    render.drawEntity(player);
+    render.drawGameObjects();
     animateGameObjects();
     checkWin();
     checkLose();
@@ -107,7 +110,7 @@ function playerController(e) {
     console.log(player.x + " - " + player.y);
 }
 
-function obstacleMove(obstacle) {
+export function obstacleMove(obstacle) {
     if (obstacle.gameObjectType == "obstacleRight") {
         if (obstacle.x < gameWindow.width + 100) {
             obstacle.x += obstacle.spd;
@@ -124,14 +127,14 @@ function obstacleMove(obstacle) {
 }
 
 //Colliders
-function collideWith(object) {
+export function collideWith(object) {
 
     if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
         if (object.gameObjectType.includes("obstacle")) {
             gameMaster.lives -= 1;
             player.sx = 64 * 4;
             player.sy = 64 * 5;
-            drawEntity(player);
+            render.drawEntity(player);
             if (gameMaster.lives != 0) {
                 player.x = 320;
                 player.y = 576;
@@ -203,4 +206,12 @@ function checkLose() {
 function isPause() {
     cancelAnimationFrame(gameStart);
     clearInterval(timeSet);
+}
+
+export function updateUIElements() {
+    document.getElementById('lives').innerHTML = gameMaster.lives;
+    document.getElementById('time').innerHTML = gameMaster.time;
+    document.getElementById('score').innerHTML = gameMaster.score;
+    document.getElementById('coins').innerHTML = gameMaster.coins;
+    document.getElementById('difficulty').innerHTML = gameMaster.difficulty;
 }

@@ -15,10 +15,10 @@
     <div id="wrapper">
         <div id="main">
             <img id="logo" src="./sprites/logo.png" alt="logo">
-            <button onclick="start()" class="button" id="start">Start Game</button>
-            <button onclick="resume()" class="hidden" id="resume">Continue</button>
-            <button onclick="nextLevel()" class="hidden" id="next">Start Next Level</button>
-            <button onclick="howto()" class="button" id="how">How to Play</button>
+            <button class="button" id="start">Start Game</button>
+            <button class="hidden" id="resume">Continue</button>
+            <button class="hidden" id="next">Start Next Level</button>
+            <button class="button" id="how">How to Play</button>
             <button onclick="javascript:window.close('','_parent','');" class="button" id="exit">Exit</button>
         </div>
     </div>
@@ -39,8 +39,7 @@
     <canvas id="gameWindow" width="640" height="640" style="border: 1px solid #000000;"></canvas>
 
 </body>
-<script type="text/javascript" src="renderResources.js"></script>
-<script type="text/javascript" src="gameLoop.js"></script>
-<script src="menuFunctions.js"></script>
+<script type="module" src="Evadgency_JS/gameLoop.js"></script>
+<script type="module" src="Evadgency_JS/menuFunctions.js"></script>
 
 </html>
