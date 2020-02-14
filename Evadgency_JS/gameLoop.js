@@ -163,14 +163,15 @@ function castRay() {
     // rayCast right,left,down,up
     var rayCast = [player.x + player.spd, player.x - player.spd, player.y + player.spd, player.y - player.spd];
     var temp;
-    return true;
-    for (i = 0; i < staticObjects.length; i++) {
-        if (rayCast[3] == staticObjects[i].y && player.x == staticObjects[i].x) {
+    
+    for (var i = 0; i < staticObjects.length; i++) {
+        if (rayCast[3] == staticObjects[i].x && player.x == staticObjects[i].y) {
             temp = "up";
         } else {
             temp = "";
         }
     }
+    return temp;
 }
 
 // win/lose states
