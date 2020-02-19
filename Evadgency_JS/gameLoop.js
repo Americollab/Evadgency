@@ -74,13 +74,16 @@ function playerController(e) {
     if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
         player.y = player.y - player.spd;
         player.sx = 0; // up
-    } else if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
+    }
+    if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
         player.y = player.y + player.spd;
         player.sx = 128; // down
-    } else if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
+    }
+    if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
         player.x = player.x - player.spd;
         player.sx = 256; // left
-    } else if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
+    }
+    if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
         player.x = player.x + player.spd;
         player.sx = 320; // right
     }
