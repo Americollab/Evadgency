@@ -17,6 +17,8 @@ export var gameMaster = {
     ticksPerFrame: 12, //controls animation speed
 }
 
+var playerPosX, playerPosY;
+
 window.onload = function () {
     updateUIElements();
     initialize();
@@ -44,8 +46,8 @@ export function update() {
     gameStart = requestAnimationFrame(update);
     render.ctx.clearRect(0, 0, gameWindow.width, gameWindow.height); //Clears sprites every frame
     render.drawBG();
-    render.drawEntity(player);
     render.drawGameObjects();
+    render.drawEntity(player);
     animateGameObjects();
     checkWin();
     checkLose();
@@ -69,22 +71,24 @@ function animateGameObjects() {
 document.addEventListener("keydown", playerController, false);
 
 function playerController(e) {
-    castRay();
-    console.log(castRay());
+    playerPosX = player.x;
+    playerPosY = player.y;
     if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
         player.y = player.y - player.spd;
         player.sx = 0; // up
-    } else if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
+    } 
+    if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
         player.y = player.y + player.spd;
         player.sx = 128; // down
-    } else if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
+    }
+    if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
         player.x = player.x - player.spd;
         player.sx = 256; // left
-    } else if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
+    }
+    if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
         player.x = player.x + player.spd;
         player.sx = 320; // right
     }
-
     if (e.keyCode == 80) { //Press P to select a different avatar
         player.sy += 64;
         if (player.sy > 64 * 4) {
@@ -140,7 +144,7 @@ export function collideWith(object) {
                 player.y = 576;
                 player.sx = 0;
                 player.sy = 128;
-                drawEntity(player);
+                render.drawEntity(player);
             }
             console.log(gameMaster.lives);
             document.getElementById('lives').innerHTML = gameMaster.lives;
@@ -154,24 +158,10 @@ export function collideWith(object) {
             document.getElementById('coins').innerHTML = gameMaster.coins
 
         } else if (object.gameObjectType.includes("staticObject")) {
-            console.log("Clipping Error! Ray Cast in PlayerController failed.");
+            player.x = playerPosX;
+            player.y = playerPosY;
         }
     }
-}
-
-function castRay() {
-    // rayCast right,left,down,up
-    var rayCast = [player.x + player.spd, player.x - player.spd, player.y + player.spd, player.y - player.spd];
-    var temp;
-    
-    for (var i = 0; i < staticObjects.length; i++) {
-        if (rayCast[3] == staticObjects[i].x && player.x == staticObjects[i].y) {
-            temp = "up";
-        } else {
-            temp = "";
-        }
-    }
-    return temp;
 }
 
 // win/lose states
