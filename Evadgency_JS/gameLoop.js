@@ -17,6 +17,8 @@ export var gameMaster = {
   ticksPerFrame: 12, //controls animation speed
 }
 
+var playerPosX, playerPosY;
+
 window.onload = function () {
   updateUIElements();
   initialize();
@@ -41,14 +43,14 @@ function initialize() {
 
 // Game Logic Updates
 export function update() {
-  gameStart = requestAnimationFrame(update);
-  render.ctx.clearRect(0, 0, gameWindow.width, gameWindow.height); //Clears sprites every frame
-  render.drawBG();
-  render.drawEntity(player);
-  render.drawGameObjects();
-  animateGameObjects();
-  checkWin();
-  checkLose();
+    gameStart = requestAnimationFrame(update);
+    render.ctx.clearRect(0, 0, gameWindow.width, gameWindow.height); //Clears sprites every frame
+    render.drawBG();
+    render.drawGameObjects();
+    render.drawEntity(player);
+    animateGameObjects();
+    checkWin();
+    checkLose();
 }
 
 function animateGameObjects() {
@@ -69,48 +71,47 @@ function animateGameObjects() {
 document.addEventListener("keydown", playerController, false);
 
 function playerController(e) {
-  castRay();
-  console.log(castRay());
-  if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
-    player.y = player.y - player.spd;
-    player.sx = 0; // up
-  }
-  if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
-    player.y = player.y + player.spd;
-    player.sx = 128; // down
-  }
-  if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
-    player.x = player.x - player.spd;
-    player.sx = 256; // left
-  }
-  if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
-    player.x = player.x + player.spd;
-    player.sx = 320; // right
-  }
-
-  if (e.keyCode == 80) { //Press P to select a different avatar
-    player.sy += 64;
-    if (player.sy > 64 * 4) {
-      player.sy = 64;
+    playerPosX = player.x;
+    playerPosY = player.y;
+    if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
+        player.y = player.y - player.spd;
+        player.sx = 0; // up
+    } 
+    if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
+        player.y = player.y + player.spd;
+        player.sx = 128; // down
     }
-  }
-  if (e.keyCode == 27) { //Press Esc to pause game
-    if (gameMaster.gameOn == true) {
-      gameMaster.gameOn = false;
-      isPause();
-      document.getElementById("resume").className = "button";
-      document.getElementById("start").className = "hidden";
-      document.getElementById("next").className = "hidden";
-      document.getElementById("wrapper").style.display = "flex";
-    } else if (gameMaster.gameOn == false) {
-      document.getElementById("wrapper").style.display = "none";
-      gameMaster.gameOn = true;
-      timer();
-      gameStart = requestAnimationFrame(update);
+    if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
+        player.x = player.x - player.spd;
+        player.sx = 256; // left
+    }
+    if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
+        player.x = player.x + player.spd;
+        player.sx = 320; // right
+    }
+    if (e.keyCode == 80) { //Press P to select a different avatar
+        player.sy += 64;
+        if (player.sy > 64 * 4) {
+            player.sy = 64;
+        }
+    }
+    if (e.keyCode == 27) { //Press Esc to pause game
+        if (gameMaster.gameOn == true) {
+            gameMaster.gameOn = false;
+            isPause();
+            document.getElementById("resume").className = "button";
+            document.getElementById("start").className = "hidden";
+            document.getElementById("next").className = "hidden";
+            document.getElementById("wrapper").style.display = "flex";
+        } else if (gameMaster.gameOn == false) {
+            document.getElementById("wrapper").style.display = "none";
+            gameMaster.gameOn = true;
+            timer();
+            gameStart = requestAnimationFrame(update);
 
-    };
-  }
-  console.log(player.x + " - " + player.y);
+        };
+    }
+    console.log(player.x + " - " + player.y);
 }
 
 export function obstacleMove(obstacle) {
@@ -132,49 +133,35 @@ export function obstacleMove(obstacle) {
 //Colliders
 export function collideWith(object) {
 
-  if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
-    if (object.gameObjectType.includes("obstacle")) {
-      gameMaster.lives -= 1;
-      player.sx = 64 * 4;
-      player.sy = 64 * 5;
-      render.drawEntity(player);
-      if (gameMaster.lives != 0) {
-        player.x = 320;
-        player.y = 576;
-        player.sx = 0;
-        player.sy = 128;
-        drawEntity(player);
-      }
-      console.log(gameMaster.lives);
-      document.getElementById('lives').innerHTML = gameMaster.lives;
+    if (player.x <= object.x + object.width / 2 && player.x >= object.x - object.width / 2 && player.y <= object.y + object.height / 2 && player.y >= object.y - object.height / 2) {
+        if (object.gameObjectType.includes("obstacle")) {
+            gameMaster.lives -= 1;
+            player.sx = 64 * 4;
+            player.sy = 64 * 5;
+            render.drawEntity(player);
+            if (gameMaster.lives != 0) {
+                player.x = 320;
+                player.y = 576;
+                player.sx = 0;
+                player.sy = 128;
+                render.drawEntity(player);
+            }
+            console.log(gameMaster.lives);
+            document.getElementById('lives').innerHTML = gameMaster.lives;
 
-    } else if (object.gameObjectType.includes("collectable")) {
-      collectables.splice(collectables.indexOf(object), 1);
-      gameMaster.coins += 1;
-      gameMaster.score += 1;
-      console.log("Player score is: " + gameMaster.score + "\nCoins collected: " + gameMaster.coins);
-      document.getElementById('score').innerHTML = gameMaster.score
-      document.getElementById('coins').innerHTML = gameMaster.coins
+        } else if (object.gameObjectType.includes("collectable")) {
+            collectables.splice(collectables.indexOf(object), 1);
+            gameMaster.coins += 1;
+            gameMaster.score += 1;
+            console.log("Player score is: " + gameMaster.score + "\nCoins collected: " + gameMaster.coins);
+            document.getElementById('score').innerHTML = gameMaster.score
+            document.getElementById('coins').innerHTML = gameMaster.coins
 
-    } else if (object.gameObjectType.includes("staticObject")) {
-      console.log("Clipping Error! Ray Cast in PlayerController failed.");
+        } else if (object.gameObjectType.includes("staticObject")) {
+            player.x = playerPosX;
+            player.y = playerPosY;
+        }
     }
-  }
-}
-
-function castRay() {
-  // rayCast right,left,down,up
-  var rayCast = [player.x + player.spd, player.x - player.spd, player.y + player.spd, player.y - player.spd];
-  var temp;
-
-  for (var i = 0; i < staticObjects.length; i++) {
-    if (rayCast[3] == staticObjects[i].x && player.x == staticObjects[i].y) {
-      temp = "up";
-    } else {
-      temp = "";
-    }
-  }
-  return temp;
 }
 
 // win/lose states
@@ -198,13 +185,14 @@ function checkWin() {
 }
 
 function checkLose() {
-  if (gameMaster.lives == 0 || gameMaster.time <= 0) {
-    isPause();
-    document.getElementById('time').innerHTML = "Game Over";
-    setTimeout(function () {
-      //Game Over Screen 
-    }, 5000);
-  }
+    if (gameMaster.lives == 0 || gameMaster.time <= 0) {
+        isPause();
+        document.getElementById('time').innerHTML = "Game Over";
+        setTimeout(function () {
+            windows.open("https://forms.gle/qzGjwtB8tAim7NJ96");
+            //Game Over Screen 
+        }, 5000);
+    }
 }
 //pause game
 function isPause() {

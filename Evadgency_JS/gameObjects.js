@@ -1,5 +1,5 @@
 import { gameMaster, timer, updateUIElements, update } from "./gameLoop.js";
-import {initObjects} from "./renderResources.js";
+import { initObjects } from "./renderResources.js";
 
 export var obstacles = [],
     collectables = [],
@@ -66,10 +66,13 @@ export function initStaticObstacles() { //if statements to initialize same code 
         [64, 128], [128, 128], [256, 128], [384, 128], [512, 128]
     ];
     for (var i = 0; i < staticSpawn.length; i++) {
-        var deskMap = [[4, 6], [4, 7], [4, 8], [6, 7], [6, 8]];
-        var temp = getRandomInt(0, 4);
-        new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[temp])[0], 64 * (deskMap[temp])[1], 64, 64, staticSpawn[i][0], staticSpawn[i][1], null, 32, 32);
-        new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[temp])[0] + 64, 64 * (deskMap[temp])[1], 64, 64, staticSpawn[i][0] + 32, staticSpawn[i][1], null, 32, 32);
+        
+        var deskMap = [[4, 6], [4, 7], [4, 8], [6, 7], [6, 8]]; // location of desks on spritesheet.
+        var temp = getRandomInt(0, 4); // Selects which random desk to get from sprites
+        if (rollChance() > 50){
+            new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[temp])[0], 64 * (deskMap[temp])[1], 64, 64, staticSpawn[i][0], staticSpawn[i][1], null, 32, 32);
+            new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[temp])[0] + 64, 64 * (deskMap[temp])[1], 64, 64, staticSpawn[i][0] + 32, staticSpawn[i][1], null, 32, 32);
+        }
     }
     var wallPos = [
         [256, 32, 0, 0], [288, 32, 32, 0], [320, 32, 64, 0], [288, 32, 96, 0], [320, 32, 128, 0], [288, 32, 160, 0], [320, 32, 192, 0], [288, 32, 224, 0], [320, 32, 256, 0], [288, 32, 288, 0], [320, 32, 320, 0], [288, 32, 352, 0], [320, 32, 384, 0], [288, 32, 416, 0], [320, 32, 448, 0], [288, 32, 480, 0], [320, 32, 512, 0], [288, 32, 544, 0], [320, 32, 576, 0], [352, 32, 608, 0],
@@ -106,4 +109,8 @@ export function initCollectables() {
 
 export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function rollChance() {
+    return Math.round(Math.random() * 100) + gameMaster.difficulty * 5;
 }

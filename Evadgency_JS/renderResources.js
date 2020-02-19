@@ -2,7 +2,6 @@
 import { initObstacles, initStaticObstacles, initCollectables, collectables, staticObjects, obstacles, player } from "./gameObjects.js";
 import { collideWith, obstacleMove } from "./gameLoop.js";
 
-
 export let ctx = document.getElementById("gameWindow").getContext("2d");
 
 export function initObjects() {
@@ -28,10 +27,9 @@ export function drawGameObjects() {
 }
 //Draws game object sprites
 export function drawEntity(entity) {
-    ctx.save();
-    ctx.drawImage(entity.sprite, entity.sx, entity.sy, entity.srcW, entity.srcH, entity.x, entity.y, entity.width, entity.height);
-    ctx.restore();
-
+        ctx.save();
+        ctx.drawImage(entity.sprite, entity.sx, entity.sy, entity.srcW, entity.srcH, entity.x, entity.y, entity.width, entity.height);
+        ctx.restore();
 }
 
 //Draw level
