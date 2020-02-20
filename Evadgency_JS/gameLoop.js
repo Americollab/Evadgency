@@ -1,10 +1,9 @@
 import { gameObject, collectables, staticObjects, player } from "./gameObjects.js";
+import { animateGameObjects } from "./animator.js";
 import * as render from "./renderResources.js";
 
-export var gameStart,
-    timeSet;
+export var gameStart, timeSet;
 
-//GameMaster Object - Holds important game values
 export var gameMaster = {
     difficulty: 1,
     score: 0,
@@ -13,8 +12,6 @@ export var gameMaster = {
     coins: 0,
     gameOn: false,
     victoryPoints: 1,
-    ticks: 0, //records ticks in the loop, resets if greater than ticksPerFrame
-    ticksPerFrame: 12, //controls animation speed
 }
 
 var playerPosX, playerPosY;
@@ -51,20 +48,6 @@ export function update() {
     animateGameObjects();
     checkWin();
     checkLose();
-}
-
-function animateGameObjects() {
-    gameMaster.ticks += 1;
-    if (gameMaster.ticks > gameMaster.ticksPerFrame) {
-        gameMaster.ticks = 0;
-
-        for (var key in collectables) {
-            collectables[key].sx += 64;
-            if (collectables[key].sx > 64 * 3) {
-                collectables[key].sx = 0;
-            }
-        }
-    }
 }
 
 //controllers
@@ -112,22 +95,6 @@ function playerController(e) {
         };
     }
     console.log(player.x + " - " + player.y);
-}
-
-export function obstacleMove(obstacle) {
-    if (obstacle.gameObjectType == "obstacleRight") {
-        if (obstacle.x < gameWindow.width + 100) {
-            obstacle.x += obstacle.spd;
-        } else {
-            obstacle.x = -100;
-        }
-    } else if (obstacle.gameObjectType == "obstacleLeft") {
-        if (obstacle.x > -100) {
-            obstacle.x -= obstacle.spd;
-        } else {
-            obstacle.x = gameWindow.width + 100;
-        }
-    }
 }
 
 //Colliders

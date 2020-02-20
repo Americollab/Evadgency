@@ -1,6 +1,6 @@
 
 import { initObstacles, initStaticObstacles, initCollectables, collectables, staticObjects, obstacles } from "./gameObjects.js";
-import { collideWith, obstacleMove } from "./gameLoop.js";
+import { collideWith } from "./gameLoop.js";
 
 export let ctx = document.getElementById("gameWindow").getContext("2d");
 
@@ -17,7 +17,6 @@ export function drawGameObjects() {
     }
     for (var key in obstacles) {
         drawEntity(obstacles[key]);
-        obstacleMove(obstacles[key]); // should move this
         collideWith(obstacles[key]); // should move this
     }
     for (var key in staticObjects) {
@@ -27,9 +26,9 @@ export function drawGameObjects() {
 }
 //Draws game object sprites
 export function drawEntity(entity) {
-        ctx.save();
-        ctx.drawImage(entity.sprite, entity.sx, entity.sy, entity.srcW, entity.srcH, entity.x, entity.y, entity.width, entity.height);
-        ctx.restore();
+    ctx.save();
+    ctx.drawImage(entity.sprite, entity.sx, entity.sy, entity.srcW, entity.srcH, entity.x, entity.y, entity.width, entity.height);
+    ctx.restore();
 }
 
 //Draw level

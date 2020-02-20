@@ -44,9 +44,9 @@ export function initObstacles() {
     var laneSpawn = [96, 160, 192, 224, 451, 483, 515, 547, 288, 320, 352, 384];
     for (var i = 0; i < laneSpawn.length; i++) {
         if (rollChance(1) < 50) {
-            new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 576), laneSpawn[i], Math.floor(Math.random() * 0) + 0, 32, 32);
+            new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 576), laneSpawn[i], Math.floor(Math.random() * 1) + 1, 32, 32);
         } else {
-            new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 576), laneSpawn[i], Math.floor(Math.random() * 0) + 0, 32, 32);
+            new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 576), laneSpawn[i], Math.floor(Math.random() * 1) + 1, 32, 32);
         }
     }
 }
@@ -73,7 +73,7 @@ export function initStaticObstacles() {
     for (i = 0; i < wallPos.length; i++) {
         new gameObject(staticObjects, "staticObject", 'sprites/SpriteSheet32x32.png', (wallPos[i])[0], (wallPos[i])[1], 32, 32, (wallPos[i])[2], (wallPos[i])[3], null, 32, 32); //Might have issue with srcX and srcY being reversed somehow
     }
-    new gameObject(staticObjects, "staticObject", 'sprites/spritesheet.png', 64 * 7, 64, 64, 64, 608, 64, null, 32, 32);
+    new gameObject(staticObjects, "staticObject", 'sprites/spritesheet.png', 64 * 7, 64, 64, 64, 608, 64, null, 32, 32); // patty
 }
 
 export function initCollectables() {
