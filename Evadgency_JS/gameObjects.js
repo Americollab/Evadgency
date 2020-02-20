@@ -1,5 +1,6 @@
 import { gameMaster, timer, updateUIElements, update } from "./gameLoop.js";
 import { initObjects } from "./renderResources.js";
+import { rollChance, getRandomInt } from "./util.js";
 
 export var obstacles = [],
     collectables = [],
@@ -40,38 +41,34 @@ export function gameObject(gameObjectArray, gameObjectType, img, sx, sy, srcW, s
     gameObjectArray.push(this);
 }
 
-//gameObject initializations on game start
-export function initObstacles() { //if statements to initialize same code for different rows to create full layout
-    var laneSpawn1 = [96, 160, 192, 224, 451, 483, 515, 547, 288, 320, 352, 384];
+export function initObstacles() { 
+    var laneSpawn = [96, 160, 192, 224, 451, 483, 515, 547, 288, 320, 352, 384];
     if (gameMaster.difficulty === 1){
-      laneSpeed = 1;
-    } else {
-      laneSpeed = gameMaster.difficulty - (gameMaster.difficulty - 1) + (gameMaster.difficulty / 5);
-    }
-    for (var i = 0; i < laneSpawn1.length; i++) {
-        var temp = Math.round(Math.random() * 100) + 1;
-        var computerResponse = getRandomInt(5, 8);
-        if (temp < 50) {
-            new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * computerResponse, 64, 64, Math.round(Math.random() * 576), laneSpawn1[i], laneSpeed, 32, 32);
+        laneSpeed = 1;
+      } else {
+        laneSpeed = gameMaster.difficulty - (gameMaster.difficulty - 1) + (gameMaster.difficulty / 5);
+      }
+    for (var i = 0; i < laneSpawn.length; i++) {
+        if (rollChance(1) < 50) {
+            new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 576), laneSpawn[i], laneSpeed, 32, 32);
         } else {
-            new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * computerResponse, 64, 64, Math.round(Math.random() * 576), laneSpawn1[i], laneSpeed, 32, 32);
+            new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 576), laneSpawn[i], laneSpeed, 32, 32);
         }
     }
 }
 
-export function initStaticObstacles() { //if statements to initialize same code for different rows to create full layout
+export function initStaticObstacles() { 
     var staticSpawn = [
         [32, 416], [128, 416], [256, 416], [320, 416], [416, 416], [512, 416],
         [0, 256], [160, 256], [288, 256], [448, 256], [576, 256],
         [64, 128], [128, 128], [256, 128], [384, 128], [512, 128]
     ];
     for (var i = 0; i < staticSpawn.length; i++) {
-        
+        var randomInt = getRandomInt(0, 4);
         var deskMap = [[4, 6], [4, 7], [4, 8], [6, 7], [6, 8]]; // location of desks on spritesheet.
-        var temp = getRandomInt(0, 4); // Selects which random desk to get from sprites
-        if (rollChance() > 50){
-            new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[temp])[0], 64 * (deskMap[temp])[1], 64, 64, staticSpawn[i][0], staticSpawn[i][1], null, 32, 32);
-            new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[temp])[0] + 64, 64 * (deskMap[temp])[1], 64, 64, staticSpawn[i][0] + 32, staticSpawn[i][1], null, 32, 32);
+        if (rollChance(5, gameMaster.difficulty) > 50) {
+            new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[randomInt])[0], 64 * (deskMap[randomInt])[1], 64, 64, staticSpawn[i][0], staticSpawn[i][1], null, 32, 32);
+            new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[randomInt])[0] + 64, 64 * (deskMap[randomInt])[1], 64, 64, staticSpawn[i][0] + 32, staticSpawn[i][1], null, 32, 32);
         }
     }
     var wallPos = [
@@ -82,7 +79,14 @@ export function initStaticObstacles() { //if statements to initialize same code 
     for (i = 0; i < wallPos.length; i++) {
         new gameObject(staticObjects, "staticObject", 'sprites/SpriteSheet32x32.png', (wallPos[i])[0], (wallPos[i])[1], 32, 32, (wallPos[i])[2], (wallPos[i])[3], null, 32, 32); //Might have issue with srcX and srcY being reversed somehow
     }
-    new gameObject(staticObjects, "staticObject", 'sprites/spritesheet.png', 64 * 7, 64, 64, 64, 608, 64, null, 32, 32);
+    new gameObject(staticObjects, "staticObject", 'sprites/spritesheet.png', 64 * 7, 64, 64, 64, 608, 64, null, 32, 32); // patty
+}
+
+export function initCollectables() {
+    var laneSpawn = [192, 320, 448];
+    for (var i = 0; i < laneSpawn.length; i++) {
+        new gameObject(collectables, "collectable", "sprites/spritesheet.png", 0, 0, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], null, 32, 32);
+    }
 }
 
 export function nextLevel() {
@@ -100,17 +104,3 @@ export function nextLevel() {
     console.log(laneSpeed);
 };
 
-export function initCollectables() {
-    var laneSpawn1 = [192, 320, 448];
-    for (var i = 0; i < laneSpawn1.length; i++) {
-        new gameObject(collectables, "collectable", "sprites/spritesheet.png", 0, 0, 64, 64, Math.round(Math.random() * 576), laneSpawn1[i], null, 32, 32);
-    }
-}
-
-export function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function rollChance() {
-    return Math.round(Math.random() * 100) + gameMaster.difficulty * 5;
-}
