@@ -1,5 +1,5 @@
 
-import { initObstacles, initStaticObstacles, initCollectables, collectables, staticObjects, obstacles, player } from "./gameObjects.js";
+import { initObstacles, initStaticObstacles, initCollectables, collectables, staticObjects, obstacles } from "./gameObjects.js";
 import { collideWith, obstacleMove } from "./gameLoop.js";
 
 export let ctx = document.getElementById("gameWindow").getContext("2d");
@@ -13,16 +13,16 @@ export function initObjects() {
 export function drawGameObjects() {
     for (var key in collectables) {
         drawEntity(collectables[key]);
-        collideWith(collectables[key]);
+        collideWith(collectables[key]); // should move this
     }
     for (var key in obstacles) {
         drawEntity(obstacles[key]);
-        obstacleMove(obstacles[key]);
-        collideWith(obstacles[key]);
+        obstacleMove(obstacles[key]); // should move this
+        collideWith(obstacles[key]); // should move this
     }
     for (var key in staticObjects) {
         drawEntity(staticObjects[key]);
-        collideWith(staticObjects[key]);
+        collideWith(staticObjects[key]); // should move this
     }
 }
 //Draws game object sprites
