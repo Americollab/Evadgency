@@ -5,7 +5,7 @@ import { rollChance, getRandomInt } from "./util.js";
 export var obstacles = [],
     collectables = [],
     staticObjects = [];
-    var laneSpeed;
+var laneSpeed;
 
 var img = new Image();
 img.src = 'sprites/spritesheet.png';
@@ -41,23 +41,37 @@ export function gameObject(gameObjectArray, gameObjectType, img, sx, sy, srcW, s
     gameObjectArray.push(this);
 }
 
-export function initObstacles() { 
+export function initObstacles() {
     var laneSpawn = [96, 160, 192, 224, 451, 483, 515, 547, 288, 320, 352, 384];
-    if (gameMaster.difficulty === 1){
+    if (gameMaster.difficulty === 1) {
         laneSpeed = 1;
-      } else {
+    } else {
         laneSpeed = gameMaster.difficulty - (gameMaster.difficulty - 1) + (gameMaster.difficulty / 5);
-      }
-    for (var i = 0; i < laneSpawn.length; i++) {
-        if (rollChance(1) < 50) {
-            new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 576), laneSpawn[i], laneSpeed, 32, 32);
-        } else {
-            new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 576), laneSpawn[i], laneSpeed, 32, 32);
+    }
+    for (var ii = 0; ii < increaseSpawn(gameMaster.difficulty); ii++) {
+        for (var i = 0; i < laneSpawn.length; i++) {
+
+            if (rollChance(1) < 50) {
+                new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 608), laneSpawn[i], laneSpeed, 32, 32);
+            } else {
+                new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 608), laneSpawn[i], laneSpeed, 32, 32);
+            }
         }
     }
+
+    function increaseSpawn(input) {
+        console.log("GameDifficulty: " + input);
+        var result = input / 5;
+        if (result < 1) {
+            return 1;
+        } else {
+            return Math.floor(result);
+        }
+    }
+    console.log(increaseSpawn(gameMaster.difficulty));
 }
 
-export function initStaticObstacles() { 
+export function initStaticObstacles() {
     var staticSpawn = [
         [32, 416], [128, 416], [256, 416], [320, 416], [416, 416], [512, 416],
         [0, 256], [160, 256], [288, 256], [448, 256], [576, 256],
@@ -85,7 +99,7 @@ export function initStaticObstacles() {
 export function initCollectables() {
     var laneSpawn = [192, 320, 448];
     for (var i = 0; i < laneSpawn.length; i++) {
-        if(rollChance(1) > 80){
+        if (rollChance(1) > 80) {
             new gameObject(collectables, "collectable", "sprites/spritesheet.png", 0, 0, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], null, 32, 32);
         }
     }
@@ -94,7 +108,7 @@ export function initCollectables() {
 export function nextLevel() {
     gameMaster.gameOn = true;
     gameMaster.difficulty += 1;
-    gameMaster.victoryPoints = gameMaster.difficulty;
+    gameMaster.victoryPoints = gameMaster.difficulty; //Needs to be initialized on start of game
     updateUIElements();
     obstacles = [];
     collectables = [];
