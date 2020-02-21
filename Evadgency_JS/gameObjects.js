@@ -85,7 +85,9 @@ export function initStaticObstacles() {
 export function initCollectables() {
     var laneSpawn = [192, 320, 448];
     for (var i = 0; i < laneSpawn.length; i++) {
-        new gameObject(collectables, "collectable", "sprites/spritesheet.png", 0, 0, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], null, 32, 32);
+        if(rollChance(1) > 80){
+            new gameObject(collectables, "collectable", "sprites/spritesheet.png", 0, 0, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], null, 32, 32);
+        }
     }
 }
 
