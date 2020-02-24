@@ -1,6 +1,8 @@
 import { gameMaster, timer, update } from "./gameLoop.js";
 import { nextLevel } from "./gameObjects.js";
 
+document.getElementById("start").focus();
+
 //Function to start game on click of start button
 document.getElementById("start").addEventListener("click", start);
 document.getElementById("next").addEventListener("click", nextLevel);
