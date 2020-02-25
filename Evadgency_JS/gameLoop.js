@@ -56,19 +56,19 @@ document.addEventListener("keydown", playerController, false);
 function playerController(e) {
     playerPosX = player.x;
     playerPosY = player.y;
-    if (e.keyCode == 38 && player.y > 16 && gameMaster.gameOn == true) {
+    if ((e.keyCode == 38 || e.keyCode == 87) && player.y > 16 && gameMaster.gameOn == true) {
         player.y = player.y - player.spd;
         player.sx = 0; // up
     } 
-    if (e.keyCode == 40 && player.y < 608 && gameMaster.gameOn == true) {
+    if ((e.keyCode == 40 || e.keyCode == 83) && player.y < 608 && gameMaster.gameOn == true) {
         player.y = player.y + player.spd;
         player.sx = 128; // down
     }
-    if (e.keyCode == 37 && player.x > 16 && gameMaster.gameOn == true) {
+    if ((e.keyCode == 37 || e.keyCode == 65) && player.x > 16 && gameMaster.gameOn == true) {
         player.x = player.x - player.spd;
         player.sx = 256; // left
     }
-    if (e.keyCode == 39 && player.x < 608 && gameMaster.gameOn == true) {
+    if ((e.keyCode == 39 || e.keyCode == 68) && player.x < 608 && gameMaster.gameOn == true) {
         player.x = player.x + player.spd;
         player.sx = 320; // right
     }
@@ -85,7 +85,8 @@ function playerController(e) {
             document.getElementById("resume").className = "button";
             document.getElementById("start").className = "hidden";
             document.getElementById("next").className = "hidden";
-            document.getElementById("wrapper").style.display = "flex";
+            document.getElementById("wrapper").style.display = "inline-flex";
+            document.getElementById("resume").focus();
         } else if (gameMaster.gameOn == false) {
             document.getElementById("wrapper").style.display = "none";
             gameMaster.gameOn = true;
@@ -147,7 +148,8 @@ function checkWin() {
     document.getElementById("next").className = "button";
     document.getElementById("resume").className = "hidden";
     document.getElementById("start").className = "hidden";
-    document.getElementById("wrapper").style.display = "flex";
+    document.getElementById("wrapper").style.display = "inline-flex";
+    document.getElementById("next").focus();
   }
 }
 

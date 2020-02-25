@@ -43,29 +43,18 @@ export function gameObject(gameObjectArray, gameObjectType, img, sx, sy, srcW, s
 
 export function initObstacles() {
     var laneSpawn = [96, 160, 192, 224, 451, 483, 515, 547, 288, 320, 352, 384];
-    if (gameMaster.difficulty === 1) {
-        laneSpeed = 1;
+    if (gameMaster.difficulty === 1){
+      laneSpeed = 1;
     } else {
-        laneSpeed = gameMaster.difficulty - (gameMaster.difficulty - 1) + (gameMaster.difficulty / 5);
+      laneSpeed = gameMaster.difficulty - (gameMaster.difficulty - 1) + (gameMaster.difficulty / 7.5);
     }
-    for (var ii = 0; ii < increaseSpawn(gameMaster.difficulty); ii++) {
-        for (var i = 0; i < laneSpawn.length; i++) {
-
-            if (rollChance(1) < 50) {
-                new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 608), laneSpawn[i], laneSpeed, 32, 32);
-            } else {
-                new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * getRandomInt(5, 8), 64, 64, Math.round(Math.random() * 608), laneSpawn[i], laneSpeed, 32, 32);
-            }
-        }
-    }
-
-    function increaseSpawn(input) {
-        console.log("GameDifficulty: " + input);
-        var result = input / 5;
-        if (result < 1) {
-            return 1;
+    for (var i = 0; i < laneSpawn.length; i++) {
+        var temp = Math.round(Math.random() * 100) + 1;
+        var computerResponse = getRandomInt(5, 8);
+        if (temp < 50) {
+            new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * computerResponse, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], (Math.random() * laneSpeed) + 1, 32, 32);
         } else {
-            return Math.floor(result);
+            new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * computerResponse, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], (Math.random() * laneSpeed) + 1, 32, 32);
         }
     }
     console.log(increaseSpawn(gameMaster.difficulty));
