@@ -85,7 +85,7 @@ function playerController(e) {
             document.getElementById("resume").className = "button";
             document.getElementById("start").className = "hidden";
             document.getElementById("next").className = "hidden";
-            document.getElementById("wrapper").style.display = "flex";
+            document.getElementById("wrapper").style.display = "inline-flex";
             document.getElementById("resume").focus();
         } else if (gameMaster.gameOn == false) {
             document.getElementById("wrapper").style.display = "none";
@@ -148,7 +148,7 @@ function checkWin() {
     document.getElementById("next").className = "button";
     document.getElementById("resume").className = "hidden";
     document.getElementById("start").className = "hidden";
-    document.getElementById("wrapper").style.display = "flex";
+    document.getElementById("wrapper").style.display = "inline-flex";
     document.getElementById("next").focus();
   }
 }
