@@ -156,7 +156,6 @@ function checkLose() {
         isPause();
         document.getElementById('time').innerHTML = "Game Over";
         setTimeout(function () {
-            windows.open("https://forms.gle/qzGjwtB8tAim7NJ96");
             //Game Over Screen 
         }, 5000);
     }
