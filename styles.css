@@ -98,3 +98,6 @@ canvas {
     font-size: 200%;
   }
 }
+a:link{
+  text-decoration: none;
+}

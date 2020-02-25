@@ -5,7 +5,7 @@ import { rollChance, getRandomInt } from "./util.js";
 export var obstacles = [],
     collectables = [],
     staticObjects = [];
-    var laneSpeed;
+var laneSpeed;
 
 var img = new Image();
 img.src = 'sprites/spritesheet.png';
@@ -41,7 +41,7 @@ export function gameObject(gameObjectArray, gameObjectType, img, sx, sy, srcW, s
     gameObjectArray.push(this);
 }
 
-export function initObstacles() { 
+export function initObstacles() {
     var laneSpawn = [96, 160, 192, 224, 451, 483, 515, 547, 288, 320, 352, 384];
     if (gameMaster.difficulty === 1){
       laneSpeed = 1;
@@ -57,9 +57,10 @@ export function initObstacles() {
             new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * computerResponse, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], (Math.random() * laneSpeed) + 1, 32, 32);
         }
     }
+    console.log(increaseSpawn(gameMaster.difficulty));
 }
 
-export function initStaticObstacles() { 
+export function initStaticObstacles() {
     var staticSpawn = [
         [32, 416], [128, 416], [256, 416], [320, 416], [416, 416], [512, 416],
         [0, 256], [160, 256], [288, 256], [448, 256], [576, 256],
@@ -87,14 +88,16 @@ export function initStaticObstacles() {
 export function initCollectables() {
     var laneSpawn = [192, 320, 448];
     for (var i = 0; i < laneSpawn.length; i++) {
-        new gameObject(collectables, "collectable", "sprites/spritesheet.png", 0, 0, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], null, 32, 32);
+        if (rollChance(1) > 80) {
+            new gameObject(collectables, "collectable", "sprites/spritesheet.png", 0, 0, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], null, 32, 32);
+        }
     }
 }
 
 export function nextLevel() {
     gameMaster.gameOn = true;
     gameMaster.difficulty += 1;
-    gameMaster.victoryPoints = gameMaster.difficulty;
+    gameMaster.victoryPoints = gameMaster.difficulty; //Needs to be initialized on start of game
     updateUIElements();
     obstacles = [];
     collectables = [];

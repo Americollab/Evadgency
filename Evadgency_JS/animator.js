@@ -1,4 +1,4 @@
-import { gameObject, collectables, obstacles } from "./gameObjects.js";
+import { collectables, obstacles } from "./gameObjects.js";
 
 var ticks = 0; //records ticks in the loop, resets if greater than ticksPerFrame
 var ticksPerFrame = 12; //controls animation speed
