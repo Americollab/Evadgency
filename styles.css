@@ -93,7 +93,7 @@ canvas {
   #wrapper, canvas {
     width: 80%;
   }
-  #uiWrapper {
-    font-size: 200%;
-  }
+  /* #uiWrapper {
+    font-size: 190%;
+  } */
 }
