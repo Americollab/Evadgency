@@ -1,5 +1,4 @@
 import { gameMaster, timer, updateUIElements, update } from "./gameLoop.js";
-import { initObjects } from "./renderResources.js";
 import { rollChance, getRandomInt } from "./util.js";
 
 export var obstacles = [],
@@ -39,6 +38,13 @@ export function gameObject(gameObjectArray, gameObjectType, img, sx, sy, srcW, s
     this.spd = spd;
 
     gameObjectArray.push(this);
+}
+
+export function initObjects() {
+    initObstacles();
+    initStaticObstacles();
+    initCollectables();
+    initObjectives();
 }
 
 export function initObstacles() {
@@ -102,6 +108,20 @@ export function initCollectables() {
         if (rollChance(1) > 80) {
             new gameObject(collectables, "collectable", "sprites/spritesheet.png", 0, 0, 64, 64, Math.round(Math.random() * 576), laneSpawn[i], null, 32, 32);
         }
+    }
+}
+
+function initObjectives() {
+    var spawnLocation = [[16, 32], [80, 32], [144, 32], [208, 32], [272, 32], [336, 32], [400, 32], [464, 32], [528, 32]];
+    var deskMap = [[4, 6], [4, 7], [4, 8], [6, 7], [6, 8]];
+    for (var i = 0; i < spawnLocation.length; i++) {
+        var randomInt = getRandomInt(0, 4);
+        //Spawn objective desk.
+        //Occupied desks = goal
+        //Unoccupied does not.
+        //Max 5
+        new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[randomInt])[0], 64 * (deskMap[randomInt])[1], 64, 64, spawnLocation[i][0], spawnLocation[i][1], null, 32, 32);
+        new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[randomInt])[0] + 64, 64 * (deskMap[randomInt])[1], 64, 64, spawnLocation[i][0] + 32, spawnLocation[i][1], null, 32, 32);
     }
 }
 

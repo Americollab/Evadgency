@@ -1,4 +1,4 @@
-import { gameObject, collectables, staticObjects, player } from "./gameObjects.js";
+import { gameObject, collectables, staticObjects, player, initObjects } from "./gameObjects.js";
 import { animateGameObjects } from "./animator.js";
 import * as render from "./renderResources.js";
 
@@ -34,7 +34,7 @@ export function timer() {
 
 //intialize after pages load.
 function initialize() {
-  render.initObjects();
+  initObjects();
   update();
 }
 
@@ -46,7 +46,7 @@ export function update() {
     render.drawGameObjects();
     render.drawEntity(player);
     animateGameObjects();
-    checkWin();
+    //checkWin();
     checkLose();
 }
 

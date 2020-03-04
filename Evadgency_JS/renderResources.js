@@ -4,11 +4,7 @@ import { collideWith } from "./gameLoop.js";
 
 export let ctx = document.getElementById("gameWindow").getContext("2d");
 
-export function initObjects() {
-    initObstacles();
-    initStaticObstacles();
-    initCollectables();
-}
+
 
 export function drawGameObjects() {
     for (var key in collectables) {
