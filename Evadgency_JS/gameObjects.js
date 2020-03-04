@@ -112,7 +112,7 @@ export function initCollectables() {
 }
 
 function initObjectives() {
-    var spawnLocation = [[16, 32], [80, 32], [144, 32], [208, 32], [272, 32], [336, 32], [400, 32], [464, 32], [528, 32]];
+    var spawnLocation = [16, 80, 144, 208, 272, 336, 400, 464, 528];
     var deskMap = [[4, 6], [4, 7], [4, 8], [6, 7], [6, 8]];
     for (var i = 0; i < spawnLocation.length; i++) {
         var randomInt = getRandomInt(0, 4);
@@ -120,8 +120,8 @@ function initObjectives() {
         //Occupied desks = goal
         //Unoccupied does not.
         //Max 5
-        new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[randomInt])[0], 64 * (deskMap[randomInt])[1], 64, 64, spawnLocation[i][0], spawnLocation[i][1], null, 32, 32);
-        new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[randomInt])[0] + 64, 64 * (deskMap[randomInt])[1], 64, 64, spawnLocation[i][0] + 32, spawnLocation[i][1], null, 32, 32);
+        new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[randomInt])[0], 64 * (deskMap[randomInt])[1], 64, 64, spawnLocation[i], 32, null, 32, 32);
+        new gameObject(staticObjects, "staticObjects", "sprites/spritesheet.png", 64 * (deskMap[randomInt])[0] + 64, 64 * (deskMap[randomInt])[1], 64, 64, spawnLocation[i] + 32, 32, null, 32, 32);
     }
 }
 

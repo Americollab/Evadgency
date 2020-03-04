@@ -27,7 +27,6 @@ export function timer() {
 
   function countDown() {
     gameMaster.time--;
-    //console.log(gameMaster.time);
     updateUIElements();
   }
 }
@@ -46,7 +45,7 @@ export function update() {
     render.drawGameObjects();
     render.drawEntity(player);
     animateGameObjects();
-    //checkWin();
+    checkWin();
     checkLose();
 }
 
