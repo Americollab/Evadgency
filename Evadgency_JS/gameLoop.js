@@ -1,6 +1,7 @@
 import { gameObject, collectables, staticObjects, player, initObjects } from "./gameObjects.js";
 import { animateGameObjects } from "./animator.js";
 import * as render from "./renderResources.js";
+import { triggers } from "./objectData.js";
 
 export var gameStart, timeSet;
 
@@ -133,10 +134,9 @@ export function collideWith(object) {
 
 // win/lose states
 function checkWin() {
-  var winPos = [32, 96, 160, 224, 288, 352, 416, 480, 544];
 
   // Checks for win conditions
-  if (player.y == 64 && winPos.includes(player.x)) {
+  if (player.y == 64 && triggers.goal.includes(player.x)) {
     new gameObject(staticObjects, "staticObject", 'sprites/spritesheet.png', player.sx, player.sy, player.srcW, player.srcH, player.x, player.y, null, player.width, player.height);
     player.x = 320;
     player.y = 576;
