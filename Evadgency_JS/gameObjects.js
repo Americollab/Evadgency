@@ -5,7 +5,6 @@ import { coordinates } from "./objectData.js";
 export var obstacles = [],
     collectables = [],
     staticObjects = [];
-var laneSpeed;
 
 var img = new Image();
 img.src = 'sprites/spritesheet.png';
@@ -49,22 +48,26 @@ export function initObjects() {
 }
 
 export function initObstacles() {
-    //Controls speed
-    if (gameMaster.difficulty === 1) {
-        laneSpeed = 1;
-    } else {
-        laneSpeed = gameMaster.difficulty - (gameMaster.difficulty - 1) + (gameMaster.difficulty / 5);
-    }
 
     for (var ii = 0; ii < increaseSpawn(gameMaster.difficulty); ii++) {
         for (var i = 0; i < coordinates.interactables.length; i++) {
 
             if (rollChance(1) < 50) {
-                new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * getRandomInt(5, 8), 64, 64, randomInterval32(), coordinates.interactables[i], laneSpeed, 32, 32);
+                new gameObject(obstacles, "obstacleRight", "sprites/spritesheet.png", 64, 64 * getRandomInt(5, 8), 64, 64, randomInterval32(), coordinates.interactables[i], setSpeed(), 32, 32);
             } else {
-                new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * getRandomInt(5, 8), 64, 64, randomInterval32(), coordinates.interactables[i], laneSpeed, 32, 32);
+                new gameObject(obstacles, "obstacleLeft", "sprites/spritesheet.png", 64 * 3, 64 * getRandomInt(5, 8), 64, 64, randomInterval32(), coordinates.interactables[i], setSpeed(), 32, 32);
             }
         }
+    }
+
+    function setSpeed (){
+        let laneSpeed;
+        if (gameMaster.difficulty === 1) {
+            laneSpeed = 1;
+        } else {
+            laneSpeed = gameMaster.difficulty - (gameMaster.difficulty - 1) + (gameMaster.difficulty / 5);
+        }
+        return laneSpeed;
     }
 
     function increaseSpawn(input) {
@@ -129,6 +132,6 @@ export function nextLevel() {
     initObjects();
     requestAnimationFrame(update);
     document.getElementById("wrapper").style.display = "none";
-    console.log(laneSpeed);
+    
 };
 
